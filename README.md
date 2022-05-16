@@ -1,0 +1,56 @@
+# GFPredict 
+
+Running the code to get predictions for different models.
+Following R library packages are required:
+library("ggplot2")
+library("randomForest") 
+library("caret")  
+library("e1071") 
+library("magrittr") 
+library("dplyr")    
+library("glmnet")  
+library("ROCR")
+library("xgboost") 
+library("mltest")
+library("SHAPforxgboost")
+library("tidyverse")
+
+Following python packages are required:
+multiprocessing
+concurrent.futures
+itertools
+glob
+
+To get the predictions two scripts has to be run functionML2.R and calculate_tpr_predict_genes.py 
+Running for 295 gene sets in parallel:
+
+STEP 1:
+
+  Running model 1 (Logistic Regression): 
+  R CMD BATCH '--args  starti=1 endi=295  MLmodel=1  outf="1/f-1-295.txt" TPRf="1/TPR-1-295.txt" FDRf="1/FDR-1-295.txt" predf="1/pred-1-295.txt" scoresf="1/scores-1-295.txt" toptf="1/tfs-1-295.txt"  cfmtx="1/cf-1-295.txt"  '  functionML.R  &
+  
+  Running model 2 (Linear Regression): 
+  R CMD BATCH '--args  starti=1 endi=295  MLmodel=2  outf="2/f-1-295.txt" TPRf="2/TPR-1-295.txt" FDRf="2/FDR-1-295.txt" predf="2/pred-1-295.txt" scoresf="2/scores-1-295.txt" toptf="2/tfs-1-295.txt"  cfmtx="2/cf-1-295.txt"  '  functionML.R  &
+  
+  Running model 3 (Random forest): 
+  R CMD BATCH '--args  starti=1 endi=295  MLmodel=3  outf="3/f-1-295.txt" TPRf="3/TPR-1-295.txt" FDRf="3/FDR-1-295.txt" predf="3/pred-1-295.txt" scoresf="3/scores-1-295.txt" toptf="3/tfs-1-295.txt"  cfmtx="3/cf-1-295.txt" toptf_score="3/tf_score-1-295.txt" toptf_cor="3/tf_cor-1-295.txt" '  functionML.R  &
+  
+  Running model 4 (SVM):
+  R CMD BATCH '--args  starti=1 endi=295  MLmodel=4  outf="4/f-1-295.txt" TPRf="4/TPR-1-295.txt" FDRf="4/FDR-1-295.txt" predf="4/pred-1-295.txt" scoresf="4/scores-1-295.txt" toptf="4/tfs-1-295.txt"  cfmtx="4/cf-1-295.txt"  '  functionML.R  &
+  
+  Running model 5 (XGBoost):
+  R CMD BATCH '--args  starti=1 endi=295  MLmodel=4  outf="4/f-1-295.txt" TPRf="4/TPR-1-295.txt" FDRf="4/FDR-1-295.txt" predf="4/pred-1-295.txt" scoresf="4/scores-1-295.txt" toptf="4/tfs-1-295.txt"  cfmtx="4/cf-1-295.txt"  '  functionML.R  &
+
+
+STEP 2:
+
+Getting final predictions:
+NOTE: The below script must be run 5 times by changing input files for 5 different model
+
+nohup python calculate_tpr_predict_genes.py & ( or python calculate_tpr_predict_genes.py)
+
+Output: This will give output tpr_model3.to_csv('tpr_ml3_tfs_n_onto1.csv') which contains tpr values and predicted genes.
+
+
+
+
