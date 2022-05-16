@@ -25,8 +25,7 @@ To get the predictions two scripts has to be run functionML2.R and calculate_tpr
 Running for 295 gene sets in parallel:
 
 STEP 1:
-
-  Running model 1 (Logistic Regression): 
+Running model 1 (Logistic Regression): 
   R CMD BATCH '--args  starti=1 endi=295  MLmodel=1  outf="1/f-1-295.txt" TPRf="1/TPR-1-295.txt" FDRf="1/FDR-1-295.txt" predf="1/pred-1-295.txt" scoresf="1/scores-1-295.txt" toptf="1/tfs-1-295.txt"  cfmtx="1/cf-1-295.txt"  '  functionML.R  &
   
   Running model 2 (Linear Regression): 
