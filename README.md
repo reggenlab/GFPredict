@@ -2,24 +2,24 @@
 
 Running the code to get predictions for different models.
 Following R library packages are required:
-library("ggplot2")
-library("randomForest") 
-library("caret")  
-library("e1071") 
-library("magrittr") 
-library("dplyr")    
-library("glmnet")  
-library("ROCR")
-library("xgboost") 
-library("mltest")
-library("SHAPforxgboost")
-library("tidyverse")
+1. ggplot2
+2. randomForest 
+3. caret  
+4. e1071 
+5. magrittr 
+6. dplyr    
+7. glmnet  
+8. ROCR
+9. xgboost 
+10. mltest
+11. SHAPforxgboost
+12. tidyverse
 
 Following python packages are required:
-multiprocessing
-concurrent.futures
-itertools
-glob
+1. multiprocessing
+2. concurrent.futures
+3. itertools
+4. glob
 
 To get the predictions two scripts has to be run functionML2.R and calculate_tpr_predict_genes.py 
 Running for 295 gene sets in parallel:
