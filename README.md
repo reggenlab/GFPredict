@@ -21,7 +21,7 @@ Following python packages are required:
 3. itertools
 4. glob
 
-To get the predictions two scripts has to be run functionML2.R and calculate_tpr_predict_genes.py 
+To get the predictions two scripts has to be run functionML.R and calculate_tpr_predict_genes.py 
 Running for 295 gene sets in parallel:
 
 STEP 1:
@@ -51,7 +51,7 @@ STEP 2:
 Getting final predictions:
 NOTE: The below script must be run 5 times by changing input files for 5 different model
 
-nohup python calculate_tpr_predict_genes.py & ( or python calculate_tpr_predict_genes.py)
+nohup python calculate_tpr_predict_genes.py & (or python calculate_tpr_predict_genes.py)
 
 Output: This will give output tpr_model3.to_csv('tpr_ml3_tfs_n_onto1.csv') which contains tpr values and predicted genes.
 
