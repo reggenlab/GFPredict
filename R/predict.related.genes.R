@@ -47,10 +47,10 @@ predict.related.genes <- function(genes, ml_model, n_bootstrap){
 present0 <- grep('peakscores', ls(envir=.GlobalEnv))
 if (length(present0) == 0) {
     print('Loading data...')
-# meta_peak_name_tissue <<- as.matrix(data.table::fread('../data/meta_name_tissue_peakscores.csv'))
-# meta_peak <<- as.matrix(data.table::fread('../data/meta_data_peakscores.csv', header = T))
-# peakscores <<- as.matrix(data.table::fread("../data/peakscores_nc_all_normal.csv"))
-# unionPeaks <<- as.matrix(data.table::fread("../data/unionpeak2.0", header=F));
+meta_peak_name_tissue <<- as.matrix(data.table::fread('../data/meta_name_tissue_peakscores.csv'))
+meta_peak <<- as.matrix(data.table::fread('../data/meta_data_peakscores.csv', header = T))
+peakscores <<- as.matrix(data.table::fread("../data/peakscores_nc_all_normal.csv"))
+unionPeaks <<- as.matrix(data.table::fread("../data/unionpeak2.0", header=F));
 	#load('sysdata.rda')
 }
 
