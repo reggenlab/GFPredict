@@ -9,24 +9,24 @@ options(scipen = 999);
 library("glmnet"); 
 library("e1071");
 library("xgboost") ;
-
+library('gsheet')
 
 # minimum gene sets 
 # user input genes (breast cancer related genes):
 # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5642621/
-breast_cancer_genes <- c("PTGS2",	"ARID1A",	"NFKB1",	"TFF2",
-"STK11",	"HRAS",	"MSH2",	 "CTNNB1",
-"MEN1",	"HIF1A",	"MTHFR",	"MAP2K4",
-"AKT1",	"XRCC1",	"S100P",	"KLF5",
-"PARK2","NR5A2",	"CLPTM1L",	"GLI1",
-"CDH1",	"VEGFA",	"S100A4",	"CXCR4",
-"BRCA1", "SHH",	"PRSS1", "TERT",
-"IGF1R", "TP53", "IL6",	"ITGB1",
-"BRCA2", "PALB2", "MET",	"CD44",
-"MUC4",	"MSLN",	"SSTR2",	"TNF",
-"KRAS",	"SMAD4",	"TGFB1",	"ERBB2",
-"ROBO2",	"ATM",	"BIRC5",	"MMP9",
-"PTEN",	"STAT3",	"EGFR",	"MMP2")
+# breast_cancer_genes <- c("PTGS2",	"ARID1A",	"NFKB1",	"TFF2",
+# "STK11",	"HRAS",	"MSH2",	 "CTNNB1",
+# "MEN1",	"HIF1A",	"MTHFR",	"MAP2K4",
+# "AKT1",	"XRCC1",	"S100P",	"KLF5",
+# "PARK2","NR5A2",	"CLPTM1L",	"GLI1",
+# "CDH1",	"VEGFA",	"S100A4",	"CXCR4",
+# "BRCA1", "SHH",	"PRSS1", "TERT",
+# "IGF1R", "TP53", "IL6",	"ITGB1",
+# "BRCA2", "PALB2", "MET",	"CD44",
+# "MUC4",	"MSLN",	"SSTR2",	"TNF",
+# "KRAS",	"SMAD4",	"TGFB1",	"ERBB2",
+# "ROBO2",	"ATM",	"BIRC5",	"MMP9",
+# "PTEN",	"STAT3",	"EGFR",	"MMP2")
 
 
 #' The function makes gene prediction based on shared transcription factors 
@@ -44,6 +44,12 @@ predict.related.genes <- function(genes, ml_model, n_bootstrap){
 
     if(missing(n_bootstrap)) {n_bootstrap = 5}
 
+present_main <- grep('peakscores_nc_all_normal.csv', system('ls ../data', intern = T))
+if (length(present_main) == 0) {
+print("Please download features file at 'https://drive.google.com/file/d/10pjFdXjR_CqgZxTnUut7IceRpeDUXY2Y/view?usp=sharing' ")
+{break}
+}
+
 present0 <- grep('peakscores', ls(envir=.GlobalEnv))
 if (length(present0) == 0) {
     print('Loading data...')
@@ -51,7 +57,6 @@ meta_peak_name_tissue <<- as.matrix(data.table::fread('../data/meta_name_tissue_
 meta_peak <<- as.matrix(data.table::fread('../data/meta_data_peakscores.csv', header = T))
 peakscores <<- as.matrix(data.table::fread("../data/peakscores_nc_all_normal.csv"))
 unionPeaks <<- as.matrix(data.table::fread("../data/unionpeak2.0", header=F));
-	#load('sysdata.rda')
 }
 
 updim = dim(unionPeaks) ;
@@ -442,7 +447,7 @@ if (ml_model == 'random.forest') {
 
 ## 'xgboost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
 
-result = predict.related.genes(genes= breast_cancer_genes, ml_model = 'random.forest', n_bootstrap = 3)
+ #result = predict.related.genes(genes= breast_cancer_genes, ml_model = 'random.forest', n_bootstrap = 3)
 
 
 #questions
