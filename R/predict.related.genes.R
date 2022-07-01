@@ -9,7 +9,6 @@ options(scipen = 999);
 library("glmnet"); 
 library("e1071");
 library("xgboost") ;
-library('gsheet')
 
 # minimum gene sets 
 # user input genes (breast cancer related genes):
