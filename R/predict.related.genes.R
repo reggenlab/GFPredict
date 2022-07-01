@@ -9,6 +9,7 @@ options(scipen = 999);
 library("glmnet"); 
 library("e1071");
 library("xgboost") ;
+library('gsheet')
 
 # minimum gene sets 
 # user input genes (breast cancer related genes):
@@ -35,19 +36,19 @@ library("xgboost") ;
 #' @export
 predict.related.genes <- function(genes, ml_model, n_bootstrap){
 
-
     if (length(unique(genes)) <= 20) {print('Number of genes must at least 20')}
-    if (length(unique(genes)) <= 20) {break}
+    if (length(unique(genes)) <= 20) {stop}
 
-    if (missing(ml_model) ) {ml_model = 'random.forest'}
-
-    if(missing(n_bootstrap)) {n_bootstrap = 5}
+    if (missing(ml_model)) {ml_model = 'random.forest'}
+    if (n_bootstrap < 2) {stop('Bootstrap n must be more than 1')}
+    if (missing(n_bootstrap)) {n_bootstrap = 5}
 
 present_main <- grep('peakscores_nc_all_normal.csv', system('ls ../data', intern = T))
 if (length(present_main) == 0) {
 print("Please download features file at 'https://drive.google.com/file/d/10pjFdXjR_CqgZxTnUut7IceRpeDUXY2Y/view?usp=sharing' ")
-{break}
 }
+
+if (length(present_main) == 0) {stop}
 
 present0 <- grep('peakscores', ls(envir=.GlobalEnv))
 if (length(present0) == 0) {
@@ -441,12 +442,11 @@ if (ml_model == 'random.forest') {
         else {return(list(final_predicted_genes, sen_spe_mat_final))}
 
 
-
 }
 
 ## 'xgboost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
 
- #result = predict.related.genes(genes= breast_cancer_genes, ml_model = 'random.forest', n_bootstrap = 3)
+#result = predict.related.genes(genes= breast_cancer_genes, ml_model = 'random.forest', n_bootstrap = 1)
 
 
 #questions
