@@ -2,6 +2,7 @@
 # Installing GFPred R package
 
 options(timeout=9999999)
+
 devtools::install_github("reggenlab/GFPredict")
 
 
