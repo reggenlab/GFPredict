@@ -1,4 +1,13 @@
+
+# Installing GFPred R package
+
+options(timeout=9999999)
+devtools::install_github("reggenlab/GFPredict")
+
+
+
 # GFPredict 
+
 
 Running the code to get predictions for different models.
 Following R library packages are required:
