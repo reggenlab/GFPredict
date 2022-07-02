@@ -29,8 +29,25 @@ library("xgboost") ;
 
 
 #' The function makes gene prediction based on shared transcription factors 
-#' and epigenomic marks 
+#' and epigenomic marks present across promoter sites of the genes
+#' @param genes Object of class list, containing functionally related genes
+#' @param ml_model Object of class string, Machine learning model to select. Options: random.forest (default), 
+#' 'xgboost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
+#' @param n_bootstrap Number of bootstrapping of the features (n = 3 by default)
 #' Default machine learning model is "random.forest" 
+#' @examples
+#' breast_cancer_related_genes <- c("PTGS2", "ARID1A", "NFKB1", "TFF2", "STK11", "HRAS", "MSH2", "CTNNB1",
+#' "MEN1", "HIF1A", "MTHFR", "MAP2K4", "AKT1", "XRCC1", "S100P", "KLF5", "PARK2","NR5A2", "CLPTM1L", "GLI1",
+#' "TERT", "BRCA1", "SHH",	"PRSS1")
+#' 
+#' result <- predict_related_genes(breast_cancer_related_genes)
+#' 
+#' result <- predict_related_genes(breast_cancer_related_genes, model = 'xgboost', n_bootstrap = 5)
+#' 
+#' result[[1]] # list of predicted genes
+#' result[[2]] # Table performance metrics 
+#' result[[3]] # Table containing top predictors (if ml_model = random.forest)
+#' 
 #' @return list containing predicted gene, top predictors (if ml_model = 'random forest') and ML model metrics
 #' @export
 predict_related_genes <- function(genes, ml_model, n_bootstrap){
@@ -40,22 +57,31 @@ predict_related_genes <- function(genes, ml_model, n_bootstrap){
 
     if (missing(ml_model)) {ml_model = 'random.forest'}
     if (n_bootstrap < 2) {stop('Bootstrap n must be more than 1')}
-    if (missing(n_bootstrap)) {n_bootstrap = 5}
+    if (missing(n_bootstrap)) {n_bootstrap = 3}
 
-present_main <- grep('peakscores_nc_all_normal.csv', system('ls ../data', intern = T))
-if (length(present_main) == 0) {
-print("Please download features file at 'https://drive.google.com/file/d/10pjFdXjR_CqgZxTnUut7IceRpeDUXY2Y/view?usp=sharing' ")
-}
-
-if (length(present_main) == 0) {stop}
 
 present0 <- grep('peakscores', ls(envir=.GlobalEnv))
 if (length(present0) == 0) {
     print('Loading data...')
-meta_peak_name_tissue <<- as.matrix(data.table::fread('../data/meta_name_tissue_peakscores.csv'))
-meta_peak <<- as.matrix(data.table::fread('../data/meta_data_peakscores.csv', header = T))
-peakscores <<- as.matrix(data.table::fread("../data/peakscores_nc_all_normal.csv"))
-unionPeaks <<- as.matrix(data.table::fread("../data/unionpeak2.0", header=F));
+
+meta_peak_name_tissue_path <<- system.file("extdata", "meta_name_tissue_peakscores.csv", package = "GFPred")
+meta_peak_name_tissue <<- as.matrix(data.table::fread(meta_peak_name_tissue_path))
+
+meta_peak_path <<- system.file("extdata", "meta_data_peakscores.csv", package = "GFPred")
+meta_peak <<- as.matrix(data.table::fread(meta_peak_path, header = T))
+
+unionPeaks_path <<- system.file("extdata", "unionpeak2.0", package = "GFPred")
+unionPeaks <<- as.matrix(data.table::fread(unionPeaks_path, header=F));
+
+peakscores <- matrix(NA, 89747, 0)
+for (p_file in 1:11) {
+file_name = paste('peakscores_chunk/peakscores', p_file, '.rds', sep = "") 
+peakscore_path <- system.file("extdata", file_name, package = "GFPred")
+peakscore_n <- readRDS(peakscore_path)
+peakscores <<- cbind(peakscores, peakscore_n)
+}
+
+
 }
 
 updim = dim(unionPeaks) ;
@@ -443,10 +469,17 @@ if (ml_model == 'random.forest') {
 
 }
 
+#devtools::document()
 ## 'xgboost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
 
-#result = predict.related.genes(genes= breast_cancer_genes, ml_model = 'random.forest', n_bootstrap = 2)
+#result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'random.forest', n_bootstrap = 3)
 
 
 #questions
 # Should I include bootstrap of the model, a graph
+
+# packageurl <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
+# install.packages(packageurl, repos=NULL, type="source")
+#install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/
+
+#peak_rds <<- system.file("extdata", "*.rds", package = "GFPred")
