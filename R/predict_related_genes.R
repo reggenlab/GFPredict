@@ -449,7 +449,7 @@ final_predicted_genes <- predicted_genes_pre[-which(predicted_genes_pre %in% gen
 sen_spe_mat_final <- colSums(sen_spe_mat_i)/nrow(sen_spe_mat_i) #display and return
 print(sen_spe_mat_final)
 
-if (ml_model == 'linear.regression' || ml_model == 'logistic.regression' || ml_model == 'svm' || ml_model == 'xgboost') {
+if (ml_model == 'linear.regression' || ml_model == 'logistic.regression' || ml_model == 'svm' || ml_model == 'xg.boost') {
 if(length(final_predicted_genes) >= 80) {print("Warning: Please try a different ML model for better result, recommended: 'random.forest' or 'svm' ")}
 if(length(final_predicted_genes) < 80) {print('Predicted genes:'); print(final_predicted_genes)}
 }
