@@ -39,15 +39,13 @@ library("xgboost") ;
 #' breast_cancer_related_genes <- c("PTGS2", "ARID1A", "NFKB1", "TFF2", "STK11", "HRAS", "MSH2", "CTNNB1",
 #' "MEN1", "HIF1A", "MTHFR", "MAP2K4", "AKT1", "XRCC1", "S100P", "KLF5", "PARK2","NR5A2", "CLPTM1L", "GLI1",
 #' "TERT", "BRCA1", "SHH",	"PRSS1")
-#' 
 #' result <- predict_related_genes(breast_cancer_related_genes)
-#' 
 #' result <- predict_related_genes(breast_cancer_related_genes, model = 'xgboost', n_bootstrap = 5)
-#' 
 #' result[[1]] # list of predicted genes
 #' result[[2]] # Table performance metrics 
+#' Authors@R: person("Hadley", "Wickham", email = "hadley@rstudio.com",
+  role = c("aut", "cre"))
 #' result[[3]] # Table containing top predictors (if ml_model = random.forest)
-#' 
 #' @return list containing predicted gene, top predictors (if ml_model = 'random forest') and ML model metrics
 #' @export
 predict_related_genes <- function(genes, ml_model, n_bootstrap){
@@ -75,7 +73,7 @@ unionPeaks <<- as.matrix(data.table::fread(unionPeaks_path, header=F));
 
 peakscores <- matrix(NA, 89747, 0)
 for (p_file in 1:11) {
-file_name = paste('peakscores_chunk/peakscores', p_file, '.rds', sep = "") 
+file_name = paste('peakscores', p_file, '.rds', sep = "") 
 peakscore_path <- system.file("extdata", file_name, package = "GFPred")
 peakscore_n <- readRDS(peakscore_path)
 peakscores <<- cbind(peakscores, peakscore_n)
@@ -465,7 +463,6 @@ if (ml_model == 'random.forest') {
 
     return(result_list_rf) }
         else {return(list(final_predicted_genes, sen_spe_mat_final))}
-
 
 }
 
