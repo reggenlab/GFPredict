@@ -8,8 +8,8 @@ devtools::install_github("reggenlab/GFPredict")
 In case of difficulty in installation of libraries, "xgboost" and 'glmnet':
 
 packageurl <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
-# install.packages(packageurl, repos=NULL, type="source")
-#install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/
+install.packages(packageurl, repos=NULL, type="source")
+install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/
 
 
 # GFPredict 
