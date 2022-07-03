@@ -24,7 +24,7 @@ options(scipen = 999);
 #' and epigenomic marks present across promoter sites of the genes
 #' @param genes Object of class list, containing functionally related genes
 #' @param ml_model Object of class string, Machine learning model to select. Options: random.forest (default), 
-#' 'xgboost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
+#' 'xg.boost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
 #' @param n_bootstrap Number of bootstrapping of the features (n = 3 by default)
 #' @examples
 #' breast_cancer_related_genes <- c("PTGS2", "ARID1A", "NFKB1", "TFF2", "STK11", "HRAS", "MSH2", "CTNNB1",
@@ -33,7 +33,7 @@ options(scipen = 999);
 #' 
 #' result <- predict_related_genes(breast_cancer_related_genes)
 #' 
-#' result <- predict_related_genes(breast_cancer_related_genes, model = 'xgboost', n_bootstrap = 5)
+#' result <- predict_related_genes(breast_cancer_related_genes, model = 'xg.boost', n_bootstrap = 5)
 #' 
 #' result[[1]] # list of predicted genes
 #' 
@@ -41,8 +41,7 @@ options(scipen = 999);
 #' 
 #' #' result[[3]] # Table containing top predictors (if ml_model = random.forest)
 
-#' Authors@R: person("Omkar Chandra", "Vibhor Kumar", email = "omkar@iiitd.ac.in",
-#' role = c("Creator & author", "Author")
+#' Authors@R: person("Omkar Chandra", "Vibhor Kumar", email = "omkar@iiitd.ac.in", role = c("Creator & author", "Author")
 #' @return List containing predicted gene, top predictors (if ml_model = 'random forest') and ML model performance metrics
 #' @export
 predict_related_genes <- function(genes, ml_model, n_bootstrap){
@@ -262,7 +261,7 @@ sen_spe_mat_i[iter,] <-  sen_spe_i
 ###########################    XGBoost   ##################################       
 ################################################################################################################################################
 
-if (ml_model == 'xgboost') {
+if (ml_model == 'xg.boost') {
 
 samp_yout<- floor(0.75 * nrow(yout))
 train_yout<-sample(seq_len(nrow(yout)), size = samp_yout); train_yout <- as.matrix(train_yout)
@@ -469,7 +468,7 @@ if (ml_model == 'random.forest') {
 }
 
 #devtools::document()
-# 'xgboost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
+# 'xg.boost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
 # result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'linear.regression')
 # result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'logistic.regression')
 # result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'random.forest')
@@ -479,5 +478,3 @@ if (ml_model == 'random.forest') {
 # packageurl <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
 # install.packages(packageurl, repos=NULL, type="source")
 #install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/
-
-
