@@ -1,17 +1,10 @@
-library("ggplot2");
-library("randomForest");
-library("dplyr"); 
-library("mltest");
-library("tidyverse");
-library("ROCR");
 options(warn=-1);
 options(scipen = 999);
-library("glmnet"); 
-library("e1071");
-library("xgboost") ;
 
-# minimum gene sets 
-# user input genes (breast cancer related genes):
+#list.of.packages <- c("ggplot2", "Rcpp", "randomForest", "mltest", 'ROCR', "glmnet", "e1071", "xgboost")
+#new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+#if(length(new.packages)) install.packages(new.packages)
+
 # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5642621/
 # breast_cancer_genes <- c("PTGS2",	"ARID1A",	"NFKB1",	"TFF2",
 # "STK11",	"HRAS",	"MSH2",	 "CTNNB1",
@@ -57,8 +50,8 @@ predict_related_genes <- function(genes, ml_model, n_bootstrap){
     if (length(unique(genes)) <= 20) {print('Number of genes must at least 20')}
     if (length(unique(genes)) <= 20) {stop}
 
-    if (missing(ml_model)) {ml_model = 'random.forest'}
-    if (missing(n_bootstrap) || n_bootstrap < 2 ) {n_bootstrap = 3}
+    if (missing(ml_model)) {ml_model = 'random.forest'; print('Default random forest model is selected')}
+    if (missing(n_bootstrap)) {n_bootstrap = 3; print('Default n bootstrap iterations is set to 3')}
     if (n_bootstrap < 2) {stop('Bootstrap n must be more than 1')}
 
 
@@ -75,7 +68,7 @@ meta_peak <<- as.matrix(data.table::fread(meta_peak_path, header = T))
 unionPeaks_path <<- system.file("extdata", "unionpeak2.0", package = "GFPred")
 unionPeaks <<- as.matrix(data.table::fread(unionPeaks_path, header=F));
 
-peakscores <- matrix(NA, 89747, 0)
+peakscores <<- matrix(NA, 89747, 0)
 for (p_file in 1:11) {
 file_name = paste('peakscores', p_file, '.rds', sep = "") 
 peakscore_path <- system.file("extdata", file_name, package = "GFPred")
@@ -104,7 +97,7 @@ sen_spe_mat_i <- matrix(NA, n_bootstrap, 9) ;
 colnames(sen_spe_mat_i) <- c("Iterations", "cutoff", "accuracy", "balanced-accuracy", "recall/sensitivity", "specificity", "F1", "MCC", "error-rate") ; 
  
 
-calculate_results <- function(result, you_test) {
+calculate_results <- function(result, you_test) {  tryCatch({
 
 predicate <- ROCR::prediction(result, yout_test)
 roc.perf = ROCR::performance(predicate, measure = "tpr", x.measure = "fpr")
@@ -125,6 +118,9 @@ report <- c(n_bootstrap, cutoff[4], x_report$accuracy, x_report$balanced.accurac
 report <- as.matrix(report) ; report <- t(report)
 sen_spe_cut <- rbind(sen_spe_cut, report)
 return(sen_spe_cut)
+},
+ error=function(e){cat("ERROR :",conditionMessage(e), "\n") })
+
 }
 
 
@@ -170,6 +166,7 @@ aFPR[ iter,1:length(FPR) ] = FPR ;
 aresults[ iter,1:length(result) ] = result[iter] ;
 allpred[,iter] = finalpred ;
 sen_spe_i <- calculate_results(result, yout_test)
+if (length(sen_spe_i) == 0) {stop("Please try a different model (recommended: 'random.forest' or 'svm')")}
 sen_spe_mat_i[iter,] <-  sen_spe_i
 print(iter)
 }
@@ -198,6 +195,7 @@ aFPR[iter, 1:length(FPR)] <- FPR
 aresults[iter, 1:length(result)] <- result[sidx]
 allpred[, iter] <- finalpred
 sen_spe_i <- calculate_results(result, yout_test)
+if (length(sen_spe_i) == 0) {stop("Please try a different model (recommended: 'random.forest' or 'svm')")}
 sen_spe_mat_i[iter,] <-  sen_spe_i
 
 }
@@ -225,6 +223,7 @@ aTPR[ iter,1:length(TPR) ] = TPR ;
 aFPR[ iter,1:length(FPR) ] = FPR ;
 allpred[,iter ] = finalpred ;
 sen_spe_i <- calculate_results(result, yout_test)
+if (length(sen_spe_i) == 0) {stop("Please try adding more number of input genes")}
 sen_spe_mat_i[iter,] <-  sen_spe_i
 
 imp <- as.matrix(randomForest::importance(lm_train3, scale = TRUE ))
@@ -253,6 +252,7 @@ aFPR[ iter,1:length(FPR) ] = FPR ;
 aresults[ iter,1:length(result) ] = result[iter] ;
 allpred[,iter ] = finalpred ;
 sen_spe_i <- calculate_results(result, yout_test)
+if (length(sen_spe_i) == 0) {stop("Please try adding more number of input genes or use ml_model = 'random.forest'")}
 sen_spe_mat_i[iter,] <-  sen_spe_i
 
 
@@ -359,6 +359,7 @@ lm_train5 <- xgboost::xgb.train(params = params,
                        watchlist = list(train= dtrain, val= dvalid))
 
 result <- predict(lm_train5, as.matrix(ascores_test));
+if (length(unique(result)) == 1) {stop("Please try a different model (recommended: 'random.forest' or 'svm') ")}
 finalpred <- predict(lm_train5, as.matrix(peakscores));
 sidx <- order(result, decreasing=TRUE);
 labels <- yout_test[sidx]; labels <- as.numeric(labels)
@@ -368,6 +369,7 @@ aFPR[iter, 1:length(FPR)] = FPR ;
 aresults [iter, 1:length(result)] = result[sidx] ;
 allpred[,iter] = finalpred;
 sen_spe_i <- calculate_results(result, yout_test)
+if (length(sen_spe_i) == 0) {stop("Please try a different model (recommended: 'random.forest' or 'svm') ")}
 sen_spe_mat_i[iter,] <-  sen_spe_i
 
 }
@@ -435,6 +437,7 @@ for (cut_off in 1:length(i1)) {
     tpr = num_pred_genes/ length(which(allpred_final >= i1[cut_off]))
     tpr_mat[cut_off, 1]  = i1[cut_off]
     tpr_mat[cut_off, 2] = tpr
+
 }
 
 tpr_final = tpr_mat[which(tpr_mat[,2] == max(tpr_mat[,2])),1]
@@ -443,19 +446,14 @@ if (length(which(predicted_genes_pre %in% genes)) != 0) {
 final_predicted_genes <- predicted_genes_pre[-which(predicted_genes_pre %in% genes)]
 } else {final_predicted_genes <- predicted_genes_pre}
 
-########################
-extra <- nchar('||100%')
-width <- options()$width
-step <- round(iter / n_bootstrap * (width - extra))
-text <- sprintf('|%s%s|% 3s%%', strrep('=', step), strrep(' ', width - step - extra), round(iter / n_bootstrap * 100))
-cat('predicting:', text)
-Sys.sleep(0.05)
-cat(if (iter == n_bootstrap) '\n' else '\014')
-########################
-
 
 sen_spe_mat_final <- colSums(sen_spe_mat_i)/nrow(sen_spe_mat_i) #display and return
 print(sen_spe_mat_final)
+
+if (ml_model == 'linear.regression' || ml_model == 'logistic.regression' || ml_model == 'svm' || ml_model == 'xgboost') {
+if(length(final_predicted_genes) >= 80) {print("Warning: Please try a different ML model for better result, recommended: 'random.forest' or 'svm' ")}
+if(length(final_predicted_genes) < 80) {print('Predicted genes:'); print(final_predicted_genes)}
+}
 
 ################## return the variables (results) ########## 
 if (ml_model == 'random.forest') {
@@ -471,16 +469,15 @@ if (ml_model == 'random.forest') {
 }
 
 #devtools::document()
-## 'xgboost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
-
-#result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'xgboost')
-
-
-#questions
-# Should I include bootstrap of the model, a graph
+# 'xgboost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
+# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'linear.regression')
+# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'logistic.regression')
+# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'random.forest')
+# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'svm')
+# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'xgboost')
 
 # packageurl <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
 # install.packages(packageurl, repos=NULL, type="source")
 #install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/
 
-#peak_rds <<- system.file("extdata", "*.rds", package = "GFPred")
+
