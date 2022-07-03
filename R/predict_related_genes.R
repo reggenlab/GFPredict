@@ -27,26 +27,30 @@ library("xgboost") ;
 # "ROBO2",	"ATM",	"BIRC5",	"MMP9",
 # "PTEN",	"STAT3",	"EGFR",	"MMP2")
 
-
 #' The function makes gene prediction based on shared transcription factors 
 #' and epigenomic marks present across promoter sites of the genes
 #' @param genes Object of class list, containing functionally related genes
 #' @param ml_model Object of class string, Machine learning model to select. Options: random.forest (default), 
 #' 'xgboost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
 #' @param n_bootstrap Number of bootstrapping of the features (n = 3 by default)
-#' Default machine learning model is "random.forest" 
 #' @examples
 #' breast_cancer_related_genes <- c("PTGS2", "ARID1A", "NFKB1", "TFF2", "STK11", "HRAS", "MSH2", "CTNNB1",
-#' "MEN1", "HIF1A", "MTHFR", "MAP2K4", "AKT1", "XRCC1", "S100P", "KLF5", "PARK2","NR5A2", "CLPTM1L", "GLI1",
-#' "TERT", "BRCA1", "SHH",	"PRSS1")
+#'      "MEN1", "HIF1A", "MTHFR", "MAP2K4", "AKT1", "XRCC1", "S100P", "KLF5", "PARK2","NR5A2", "CLPTM1L", "GLI1",
+#'      "TERT", "BRCA1", "SHH",	"PRSS1")
+#' 
 #' result <- predict_related_genes(breast_cancer_related_genes)
+#' 
 #' result <- predict_related_genes(breast_cancer_related_genes, model = 'xgboost', n_bootstrap = 5)
+#' 
 #' result[[1]] # list of predicted genes
+#' 
 #' result[[2]] # Table performance metrics 
-#' Authors@R: person("Hadley", "Wickham", email = "hadley@rstudio.com",
-  role = c("aut", "cre"))
-#' result[[3]] # Table containing top predictors (if ml_model = random.forest)
-#' @return list containing predicted gene, top predictors (if ml_model = 'random forest') and ML model metrics
+#' 
+#' #' result[[3]] # Table containing top predictors (if ml_model = random.forest)
+
+#' Authors@R: person("Omkar Chandra", "Vibhor Kumar", email = "omkar@iiitd.ac.in",
+#' role = c("Creator & author", "Author")
+#' @return List containing predicted gene, top predictors (if ml_model = 'random forest') and ML model performance metrics
 #' @export
 predict_related_genes <- function(genes, ml_model, n_bootstrap){
 
@@ -54,8 +58,8 @@ predict_related_genes <- function(genes, ml_model, n_bootstrap){
     if (length(unique(genes)) <= 20) {stop}
 
     if (missing(ml_model)) {ml_model = 'random.forest'}
+    if (missing(n_bootstrap) || n_bootstrap < 2 ) {n_bootstrap = 3}
     if (n_bootstrap < 2) {stop('Bootstrap n must be more than 1')}
-    if (missing(n_bootstrap)) {n_bootstrap = 3}
 
 
 present0 <- grep('peakscores', ls(envir=.GlobalEnv))
@@ -469,7 +473,7 @@ if (ml_model == 'random.forest') {
 #devtools::document()
 ## 'xgboost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
 
-#result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'random.forest', n_bootstrap = 3)
+#result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'xgboost')
 
 
 #questions
