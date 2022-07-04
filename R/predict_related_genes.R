@@ -51,19 +51,19 @@ present0 <- grep('peakscores', ls(envir=.GlobalEnv))
 if (length(present0) == 0) {
     print('Loading data...')
 
-meta_peak_name_tissue_path <<- system.file("extdata", "meta_name_tissue_peakscores.csv", package = "GFPred")
+meta_peak_name_tissue_path <<- system.file("extdata", "meta_name_tissue_peakscores.csv", package = "GFPredict")
 meta_peak_name_tissue <<- as.matrix(data.table::fread(meta_peak_name_tissue_path))
 
-meta_peak_path <<- system.file("extdata", "meta_data_peakscores.csv", package = "GFPred")
+meta_peak_path <<- system.file("extdata", "meta_data_peakscores.csv", package = "GFPredict")
 meta_peak <<- as.matrix(data.table::fread(meta_peak_path, header = T))
 
-unionPeaks_path <<- system.file("extdata", "unionpeak2.0", package = "GFPred")
+unionPeaks_path <<- system.file("extdata", "unionpeak2.0", package = "GFPredict")
 unionPeaks <<- as.matrix(data.table::fread(unionPeaks_path, header=F));
 
 peakscores <<- matrix(NA, 89747, 0)
 for (p_file in 1:11) {
 file_name = paste('peakscores', p_file, '.rds', sep = "") 
-peakscore_path <- system.file("extdata", file_name, package = "GFPred")
+peakscore_path <- system.file("extdata", file_name, package = "GFPredict")
 peakscore_n <- readRDS(peakscore_path)
 peakscores <<- cbind(peakscores, peakscore_n)
 }
