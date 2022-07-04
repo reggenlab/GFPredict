@@ -3,6 +3,11 @@ Title: Predicts functionally related genes based on shared epigenomic and transc
 Version: 1.0
 Authors@R: 
     c(person("Omkar", "Chandra", email = "omkarc@iiitd.ac.in", role = c("aut", "cre")),
+    person("Madhu", "Sharma", role = c("co-aut")),
+    person("Neetesh", "Pandey", role = c("co-aut")),
+    person("Indra Prakash", "Jha", role = c("co-aut")),
+    person("Shreya", "Mishra", role = c("co-aut")),
+    person("Say Li", "Kong", role = c("co-aut")),
     person("Vibhor", "Kumar", email = "vibhor@iiitd.ac.in", role = c("aut")))
 Description: The genes in the user query gene-sets are considered as positive and genes are randomly picked from our curated list as negatives and are not annotated in the user gene-sets and gene function prediction is treated as a classification problem. Out of possible 50000 genes, if we expected the number of positive unknown genes belonging to a function is less than 100. Then if we were to pick 100 genes (as negatives) out of 50000 genes, there is less than 0.002 (100/500000) probability of having unknown positives in the negative set. For each gene-set, we choose an equal number of negatives to positives. We divide the positives and negatives into a training set (75%) and a test set (25%). The 5 different machine learning models for each gene-set are Random Forest, XGBoost, SVM (support vector machine), linear regression-based Lasso, and logistic regression.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a license
