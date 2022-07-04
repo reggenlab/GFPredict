@@ -33,15 +33,16 @@ options(scipen = 999);
 #' 
 #' result <- predict_related_genes(breast_cancer_related_genes)
 #' 
+#' result <- predict_related_genes(breast_cancer_related_genes, model = 'svm', n_bootstrap = 3)
+#' 
 #' result <- predict_related_genes(breast_cancer_related_genes, model = 'xg.boost', n_bootstrap = 5)
 #' 
 #' result[[1]] # list of predicted genes
 #' 
 #' result[[2]] # Table performance metrics 
 #' 
-#' #' result[[3]] # Table containing top predictors (if ml_model = random.forest)
+#' result[[3]] # Table containing top predictors (if ml_model = random.forest)
 
-#' Authors@R: person("Omkar Chandra", "Vibhor Kumar", email = "omkar@iiitd.ac.in", role = c("Creator & author", "Author")
 #' @return List containing predicted gene, top predictors (if ml_model = 'random forest') and ML model performance metrics
 #' @export
 predict_related_genes <- function(genes, ml_model, n_bootstrap){
@@ -450,8 +451,10 @@ sen_spe_mat_final <- colSums(sen_spe_mat_i)/nrow(sen_spe_mat_i) #display and ret
 print(sen_spe_mat_final)
 
 if (ml_model == 'linear.regression' || ml_model == 'logistic.regression' || ml_model == 'svm' || ml_model == 'xg.boost') {
-if(length(final_predicted_genes) >= 80) {print("Warning: Please try a different ML model for better result, recommended: 'random.forest' or 'svm' ")}
+if(length(final_predicted_genes) >= 80) {print("Warning: Try a different ML model for better result, recommended: 'random.forest' or 'svm' ")}
+if(length(final_predicted_genes) == 0) {print("Try a different ML model, recommended: 'random.forest' or 'svm' ")}
 if(length(final_predicted_genes) < 80) {print('Predicted genes:'); print(final_predicted_genes)}
+
 }
 
 ################## return the variables (results) ########## 
@@ -459,8 +462,8 @@ if (ml_model == 'random.forest') {
     result_list_rf  = list(final_predicted_genes, sen_spe_mat_final, display_top_pred)
     print('Top predictors:')
     print(display_top_pred)
-    print('Predicted genes:')
-    print(final_predicted_genes)
+    if(length(final_predicted_genes) == 0) {print("Increase the number of genes or try 'svm' model ")}
+        if(length(final_predicted_genes) != 0) {print(paste('Predicted genes:', final_predicted_genes, sep = " "))}
 
     return(result_list_rf) }
         else {return(list(final_predicted_genes, sen_spe_mat_final))}
@@ -473,7 +476,7 @@ if (ml_model == 'random.forest') {
 # result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'logistic.regression')
 # result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'random.forest')
 # result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'svm')
-# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'xgboost')
+# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'xg.boost')
 
 # packageurl <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
 # install.packages(packageurl, repos=NULL, type="source")
