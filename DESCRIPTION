@@ -1,10 +1,10 @@
 Package: GFPred
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Predicts functionally related genes based on shared epigenomic and transcription factor binding patterns
+Version: 1.0
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Omkar", "Chandra", "omkarc@iiitd.ac.on", role = c("aut", "cre"))
+    person("Vibhor", "Kumar", "vibhor@iiitd.ac.on", role = c("aut"))
+Description: The genes in the user query gene-sets are considered as positive and genes are randomly picked from our curated list as negatives and are not annotated in the user gene-sets and gene function prediction is treated as a classification problem. Out of possible 50000 genes, if we expected the number of positive unknown genes belonging to a function is less than 100. Then if we were to pick 100 genes (as negatives) out of 50000 genes, there is less than 0.002 (100/500000) probability of having unknown positives in the negative set. For each gene-set, we choose an equal number of negatives to positives. We divide the positives and negatives into a training set (75%) and a test set (25%). The 5 different machine learning models for each gene-set are Random Forest, XGBoost, SVM (support vector machine), linear regression-based Lasso, and logistic regression.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
