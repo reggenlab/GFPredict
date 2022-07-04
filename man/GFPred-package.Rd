@@ -13,16 +13,12 @@ The genes in the user query gene-sets are considered as positive and genes are r
 
 Authors:
 \itemize{
-  \item Vibhor Kumar \email{vibhor@iiitd.ac.in}
-}
-
-Other contributors:
-\itemize{
   \item Madhu Sharma
   \item Neetesh Pandey
   \item Indra Prakash Jha
   \item Shreya Mishra
   \item Say Li Kong
+  \item Vibhor Kumar \email{vibhor@iiitd.ac.in}
 }
 
 }
