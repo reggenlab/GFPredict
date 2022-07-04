@@ -33,11 +33,11 @@ breast_cancer_genes <- c("PTGS2", "ARID1A", "NFKB1",	"TFF2",
  "PTEN",	"STAT3", "EGFR", "MMP2") 
  Reference: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5642621/
 
-result <- predict_related_genes(breast_cancer_related_genes)
+result <- predict_related_genes(breast_cancer_genes)
 
-result <- predict_related_genes(breast_cancer_related_genes, ml_model = 'svm', n_bootstrap = 3)
+result <- predict_related_genes(breast_cancer_genes, ml_model = 'svm', n_bootstrap = 3)
 
-result <- predict_related_genes(breast_cancer_related_genes, ml_model = 'xg.boost', n_bootstrap = 5)
+result <- predict_related_genes(breast_cancer_genes, ml_model = 'xg.boost', n_bootstrap = 5)
 
 result[[1]] # list of predicted genes
 
