@@ -29,12 +29,13 @@ breast_cancer_related_genes <- c("PTGS2", "ARID1A", "NFKB1", "TFF2", "STK11", "H
 
 result <- predict_related_genes(breast_cancer_related_genes)
 
+result <- predict_related_genes(breast_cancer_related_genes, model = 'svm', n_bootstrap = 3)
+
 result <- predict_related_genes(breast_cancer_related_genes, model = 'xg.boost', n_bootstrap = 5)
 
 result[[1]] # list of predicted genes
 
 result[[2]] # Table performance metrics 
 
-#' result[[3]] # Table containing top predictors (if ml_model = random.forest)
-Authors@R: person("Omkar Chandra", "Vibhor Kumar", email = "omkar@iiitd.ac.in", role = c("Creator & author", "Author")
+result[[3]] # Table containing top predictors (if ml_model = random.forest)
 }
