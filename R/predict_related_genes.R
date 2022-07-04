@@ -23,11 +23,11 @@ options(scipen = 999);
 #'  "PTEN",	"STAT3", "EGFR", "MMP2") 
 #'  Reference: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5642621/
 #' 
-#' result <- predict_related_genes(breast_cancer_related_genes)
+#' result <- predict_related_genes(breast_cancer_genes)
 #' 
-#' result <- predict_related_genes(breast_cancer_related_genes, ml_model = 'svm', n_bootstrap = 3)
+#' result <- predict_related_genes(breast_cancer_genes, ml_model = 'svm', n_bootstrap = 3)
 #' 
-#' result <- predict_related_genes(breast_cancer_related_genes, ml_model = 'xg.boost', n_bootstrap = 5)
+#' result <- predict_related_genes(breast_cancer_genes, ml_model = 'xg.boost', n_bootstrap = 5)
 #' 
 #' result[[1]] # list of predicted genes
 #' 
@@ -473,3 +473,4 @@ if (ml_model == 'random.forest') {
 # packageurl <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
 # install.packages(packageurl, repos=NULL, type="source")
 #install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/
+
