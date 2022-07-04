@@ -23,15 +23,21 @@ The function makes gene prediction based on shared transcription factors
 and epigenomic marks present across promoter sites of the genes
 }
 \examples{
-breast_cancer_related_genes <- c("PTGS2", "ARID1A", "NFKB1", "TFF2", "STK11", "HRAS", "MSH2", "CTNNB1",
-     "MEN1", "HIF1A", "MTHFR", "MAP2K4", "AKT1", "XRCC1", "S100P", "KLF5", "PARK2","NR5A2", "CLPTM1L", "GLI1",
-     "TERT", "BRCA1", "SHH",	"PRSS1")
+breast_cancer_genes <- c("PTGS2", "ARID1A", "NFKB1",	"TFF2",
+"STK11",	"HRAS",	"MSH2",	 "CTNNB1", "MEN1",	"HIF1A", "MTHFR", "MAP2K4",
+"AKT1",	"XRCC1", "S100P", "KLF5", "PARK2","NR5A2", "CLPTM1L", "GLI1",
+"CDH1", "VEGFA",	"S100A4", "CXCR4", "BRCA1", "SHH", "PRSS1", "TERT",
+ "IGF1R", "TP53", "IL6",	"ITGB1", "BRCA2", "PALB2", "MET", "CD44",
+ "MUC4",	"MSLN",	"SSTR2", "TNF", "MUC4", "MSLN",	"SSTR2", "TNF",
+ "KRAS",	"SMAD4", "TGFB1", "ERBB2", "ROBO2",	"ATM", "BIRC5",	"MMP9",
+ "PTEN",	"STAT3", "EGFR", "MMP2") 
+ Reference: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5642621/
 
 result <- predict_related_genes(breast_cancer_related_genes)
 
-result <- predict_related_genes(breast_cancer_related_genes, model = 'svm', n_bootstrap = 3)
+result <- predict_related_genes(breast_cancer_related_genes, ml_model = 'svm', n_bootstrap = 3)
 
-result <- predict_related_genes(breast_cancer_related_genes, model = 'xg.boost', n_bootstrap = 5)
+result <- predict_related_genes(breast_cancer_related_genes, ml_model = 'xg.boost', n_bootstrap = 5)
 
 result[[1]] # list of predicted genes
 

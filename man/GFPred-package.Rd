@@ -9,11 +9,20 @@
 The genes in the user query gene-sets are considered as positive and genes are randomly picked from our curated list as negatives and are not annotated in the user gene-sets and gene function prediction is treated as a classification problem. Out of possible 50000 genes, if we expected the number of positive unknown genes belonging to a function is less than 100. Then if we were to pick 100 genes (as negatives) out of 50000 genes, there is less than 0.002 (100/500000) probability of having unknown positives in the negative set. For each gene-set, we choose an equal number of negatives to positives. We divide the positives and negatives into a training set (75%) and a test set (25%). The 5 different machine learning models for each gene-set are Random Forest, XGBoost, SVM (support vector machine), linear regression-based Lasso, and logistic regression.
 }
 \author{
-\strong{Maintainer}: Omkar omkarc@iiitd.ac.on Chandra
+\strong{Maintainer}: Omkar Chandra \email{omkarc@iiitd.ac.in}
 
 Authors:
 \itemize{
-  \item Vibhor vibhor@iiitd.ac.on Kumar
+  \item Vibhor Kumar \email{vibhor@iiitd.ac.in}
+}
+
+Other contributors:
+\itemize{
+  \item Madhu Sharma
+  \item Neetesh Pandey
+  \item Indra Prakash Jha
+  \item Shreya Mishra
+  \item Say Li Kong
 }
 
 }
