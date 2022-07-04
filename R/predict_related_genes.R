@@ -455,7 +455,7 @@ if (ml_model == 'random.forest') {
     print('Top predictors:')
     print(display_top_pred)
     if(length(final_predicted_genes) == 0) {print("Increase the number of genes or try 'svm' model ")}
-        if(length(final_predicted_genes) != 0) {print(paste('Predicted genes:', final_predicted_genes, sep = " "))}
+        if(length(final_predicted_genes) != 0) {print('Predicted genes:'); print(final_predicted_genes)}
 
     return(result_list_rf) }
         else {return(list(final_predicted_genes, sen_spe_mat_final))}
