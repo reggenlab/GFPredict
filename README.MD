@@ -28,6 +28,25 @@ install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/con
 ```
 ---
 
+## GFPredict usage examples [![](./extras/images/pin.svg)](#examples)
+``` r
+library(GFPredict)
+
+cell_cycle_related_genes <- c("RPL23A", "IPO4", "TARS1", "COG4", "TEX10", "TRMT112", "TXNL4A", "CLP1", 
+"HSPA5", "ANAPC4", "RNF168", "ATP5F1D", "RUVBL2", "NMT1", "PNKP", "SF3B3", "FDPS", "FARSB", "HARS1",
+"RPL8", "CCT3", "AQR", "MCL1", "CENPM") 
+
+result <- predict_related_genes(cell_cycle_related_genes) #Default parameter are selected
+
+#fine tune the model with changing number of bootstrapping of the features 
+result <- predict_related_genes(genes = cell_cycle_related_genes, n_bootstrap = 5)
+
+#Use different ML algorithm if the model performance is not good after using the default random forest algoritm 
+result <- predict_related_genes(genes = cell_cycle_related_genes, ml_model = 'svm', n_bootstrap = 10, feature_type = 'transcription_factors')
+
+
+
+```
 
 Running the code to get predictions for different models.
 Following R library packages are required:
