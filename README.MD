@@ -10,7 +10,7 @@
 3. [Generate all results used in the analyses of the paper](#results)
 
 
-## Package installation[![](./extras/images/pin.svg)](#installation)
+## GFPredict Package installation[![](./extras/images/pin.svg)](#installation)
 
 Install the package :
 
