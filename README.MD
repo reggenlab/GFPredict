@@ -11,7 +11,7 @@
 
 ---
 
-## GFPredict Package installation[![](./extras/images/pin.svg)](#installation)
+## GFPredict Package installation[![](./extras/images/pin.svg)]<a name="installation"></a>
 
 Install the package:
 ``` r
@@ -28,7 +28,7 @@ install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/con
 ```
 ---
 
-## GFPredict usage examples [![](./extras/images/pin.svg)](#examples)
+## GFPredict usage examples [![](./extras/images/pin.svg)]<a name="examples"></a>
 ``` r
 library(GFPredict)
 
