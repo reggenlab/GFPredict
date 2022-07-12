@@ -9,6 +9,7 @@
 2. [GFPredict usage examples](#examples)
 3. [Generate all results used in the analyses of the paper](#results)
 
+---
 
 ## GFPredict Package installation[![](./extras/images/pin.svg)](#installation)
 
