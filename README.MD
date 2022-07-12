@@ -10,6 +10,12 @@
 2. [GFPredict usage examples](#examples)
 
 3. [Generate all results used in the analyses of the paper](#results)
+   - [Results of random forest algorithm for 5917 ontological gene-sets](#ontology_results)
+   - [PUBMED-based abstract mining](#pubmed_abtract_mining)
+   - [Clustering of functions](#function_cluster)
+   - [Validation of predicted lncRNAs in clusters using CRISPR screens](#cluster_crispr_screen)
+   - [GFPredict testing using different CRISPR screens](#different_crispr_screen)
+
 
 ---
 
@@ -57,26 +63,13 @@ result[[3]] # contains table of top predictors (if ml_model = random.forest)
 
 ```
 
-Running the code to get predictions for different models.
-Following R library packages are required:
-1. ggplot2
-2. randomForest 
-3. caret  
-4. e1071 
-5. magrittr 
-6. dplyr    
-7. glmnet  
-8. ROCR
-9. xgboost 
-10. mltest
-11. SHAPforxgboost
-12. tidyverse
+---
 
-Following python packages are required:
-1. multiprocessing
-2. concurrent.futures
-3. itertools
-4. glob
+## Generate all results used in the analyses of the paper [![](./extras/images/pin.svg)]<a name="examples"></a>
+
+
+
+
 
 To get the predictions run the two scripts: functionML.R and calculate_tpr_predict_genes.py 
 Running for 295 gene sets in parallel:
