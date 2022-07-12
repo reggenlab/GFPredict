@@ -12,8 +12,7 @@
 
 ## GFPredict Package installation[![](./extras/images/pin.svg)](#installation)
 
-Install the package :
-
+Install the package:
 ``` r
 options(timeout=9999999)
 devtools::install_github("reggenlab/GFPredict")
@@ -26,8 +25,7 @@ install.packages(packageurl, repos=NULL, type="source") #for xgboost
 
 install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/ 
 ```
-
-# GFPredict 
+---
 
 
 Running the code to get predictions for different models.
