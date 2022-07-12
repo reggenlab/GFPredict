@@ -5,11 +5,11 @@
 ---
 
 ## Table of contents[![](./extras/images/pin.svg)](#table-of-contents)
-1.[GFPredict Package installation](#installation)
+1. [GFPredict Package installation](#installation)
 
-2.[GFPredict usage examples](#examples)
+2. [GFPredict usage examples](#examples)
 
-3.[Generate all results used in the analyses of the paper](#results)
+3. [Generate all results used in the analyses of the paper](#results)
 
 ---
 
