@@ -95,4 +95,4 @@ def call_calculation(filepath, func_list):
 
 filepath3 = '3/'
 tpr_model3 = call_calculation(filepath3, func_list1)
-tpr_model3.to_csv('tpr_ml3_tfs_n_onto1.csv')
+tpr_model3.to_csv('tpr_ml3_all_onto1.csv')
