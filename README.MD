@@ -7,7 +7,7 @@
 ## Table of contents[![](./extras/images/pin.svg)](#table-of-contents)
 1. [Package installation](#installation)
 2. [GFPredict usage examples](#examples)
-3. [Generate predictions gene-sets used in the analyses of the [paper](https://www.biorxiv.org/content/10.1101/2022.04.17.488570v1)](#examples)
+3. [Generate predictions gene-sets used in the analyses of the [paper](https://www.biorxiv.org/content/10.1101/2022.04.17.488570v1)] (#results)
 
 # Installing GFPred R package
 
