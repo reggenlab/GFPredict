@@ -7,7 +7,18 @@
 ## Table of contents[![](./extras/images/pin.svg)](#table-of-contents)
 1. [Package installation](#installation)
 2. [GFPredict usage examples](#examples)
-3. [Generate predictions gene-sets used in the analyses of the paper](#results)
+3. [Generate all results used in the analyses of the paper](#results)
+
+
+## Package installation[![](./extras/images/pin.svg)](#installation)
+
+Install the package :
+
+``` r
+options(timeout=9999999)
+devtools::install_github("reggenlab/GFPredict")
+```
+
 
 # Installing GFPred R package
 
