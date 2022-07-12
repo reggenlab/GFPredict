@@ -88,6 +88,6 @@ nohup python calculate_tpr_predict_genes.py & (or python calculate_tpr_predict_g
 
 Output: This will give output tpr_model3.to_csv('tpr_ml3_tfs_n_onto1.csv') which contains tpr values and predicted genes.
 
-
+<!-- markdownlint-enable -->
 
 
