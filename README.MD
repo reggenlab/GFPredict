@@ -5,7 +5,7 @@
 ---
 
 ## Table of contents[![](./extras/images/pin.svg)](#table-of-contents)
-1. ['GFPredict' Package installation](#installation)
+1. [GFPredict Package installation](#installation)
 2. [GFPredict usage examples](#examples)
 3. [Generate all results used in the analyses of the paper](#results)
 
@@ -19,13 +19,13 @@ options(timeout=9999999)
 devtools::install_github("reggenlab/GFPredict")
 ```
 
-
-In case of difficulty in installation of libraries, "xgboost" and 'glmnet':
-
+In case of difficulty in installation of libraries, "xgboost" and 'glmnet', run following commands:
+``` r
 packageurl <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
-install.packages(packageurl, repos=NULL, type="source")
-install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/
 
+install.packages(packageurl, repos=NULL, type="source") #for xgboost
+install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/ 
+```
 
 # GFPredict 
 
