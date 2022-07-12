@@ -19,7 +19,7 @@ options(timeout=9999999)
 devtools::install_github("reggenlab/GFPredict")
 ```
 
-In case of difficulty in installation of libraries, "xgboost" and 'glmnet', run following commands:
+In case of difficulty in installation of libraries, "xgboost" and 'glmnet', run the following commands:
 ``` r
 packageurl <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
 install.packages(packageurl, repos=NULL, type="source") #for xgboost
