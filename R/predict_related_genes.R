@@ -6,50 +6,55 @@ options(scipen = 999);
 # if(length(new.packages)) install.packages(new.packages)
 
 
-#' The function makes gene prediction based on shared transcription factors 
+#' The function makes gene prediction based on similarity in shared transcription factors 
 #' and epigenomic marks present across promoter sites of the genes
 #' @param genes Object of class list, containing functionally related genes
-#' @param ml_model Object of class string, Machine learning model to select. Options: random.forest (default), 
-#' 'xg.boost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
-#' @param n_bootstrap Number of bootstrapping of the features (n = 3 by default)
+#' @param ml_model Object of class string, Machine learning model to select. Options:
+#' 'xg.boost' , 'svm', 'random.forest' (default), 'linear.regression', 'logistic.regression'
+#' @param n_bootstrap Number of bootstraps of the negative samples (n = 3 by default)
+#' @param feature_type Object of class string. Type of features to train the model. Options: 'all_features' (default), 'transcription_factors'
 #' @examples
-#' breast_cancer_genes <- c("PTGS2", "ARID1A", "NFKB1",	"TFF2",
-#' "STK11",	"HRAS",	"MSH2",	 "CTNNB1", "MEN1",	"HIF1A", "MTHFR", "MAP2K4",
-#' "AKT1",	"XRCC1", "S100P", "KLF5", "PARK2","NR5A2", "CLPTM1L", "GLI1",
-#' "CDH1", "VEGFA",	"S100A4", "CXCR4", "BRCA1", "SHH", "PRSS1", "TERT",
-#'  "IGF1R", "TP53", "IL6",	"ITGB1", "BRCA2", "PALB2", "MET", "CD44",
-#'  "MUC4",	"MSLN",	"SSTR2", "TNF", "MUC4", "MSLN",	"SSTR2", "TNF",
-#'  "KRAS",	"SMAD4", "TGFB1", "ERBB2", "ROBO2",	"ATM", "BIRC5",	"MMP9",
-#'  "PTEN",	"STAT3", "EGFR", "MMP2") 
+#' cell_cycle_related_genes <- c("RPL23A", "IPO4", "TARS1", "COG4", "TEX10", "TRMT112", "TXNL4A", "CLP1", 
+#'"HSPA5", "ANAPC4", "RNF168", "ATP5F1D", "RUVBL2", "NMT1", "PNKP", "SF3B3", "FDPS", "FARSB", "HARS1",
+#'"RPL8", "CCT3", "AQR", "MCL1", "CENPM") 
 #'  Reference: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5642621/
 #' 
-#' result <- predict_related_genes(breast_cancer_genes)
+#' result <- predict_related_genes(genes = cell_cycle_related_genes)
 #' 
-#' result <- predict_related_genes(breast_cancer_genes, ml_model = 'svm', n_bootstrap = 3)
+#' result <- predict_related_genes(genes = cell_cycle_related_genes, n_bootstrap = 5)
 #' 
-#' result <- predict_related_genes(breast_cancer_genes, ml_model = 'xg.boost', n_bootstrap = 5)
+#' result <- predict_related_genes(genes = cell_cycle_related_genes, ml_model = 'svm', n_bootstrap = 10, feature_type = 'transcription_factors')
 #' 
-#' result[[1]] # list of predicted genes
+#' result[[1]] # contains list of predicted genes 
 #' 
-#' result[[2]] # Table performance metrics 
+#' result[[2]] # contains table of model performance metrics 
 #' 
-#' result[[3]] # Table containing top predictors (if ml_model = random.forest)
-
+#' result[[3]] # contains table of top predictors (if ml_model = random.forest)
+#' 
 #' @return List containing predicted gene, top predictors (if ml_model = 'random forest') and ML model performance metrics
 #' @export
-predict_related_genes <- function(genes, ml_model, n_bootstrap){
+predict_related_genes <- function(genes, ml_model, n_bootstrap, feature_type){
 
-    if (length(unique(genes)) <= 20) {print('Number of genes must at least 20')}
-    if (length(unique(genes)) <= 20) {stop}
+    if (length(unique(genes)) <= 20) {stop("Number of genes must at least 20")}
+    if (missing(feature_type)) {feature_type = 'all_features' ; message("Default feature_type: 'all_features' selected")}
+    if (missing(ml_model)) {ml_model = 'random.forest'; message("Default 'random.forest' model is selected")}
+    if (missing(n_bootstrap)) {n_bootstrap = 3; message("Default n_bootstrap iterations is set to 3")}
+    if (n_bootstrap < 2) {stop("Bootstrap n must be more than 1")}
+    if (ml_model == 'xg.boost' && n_bootstrap < 15) {
+        message("Recommended n_bootstrap is at least 15 for XGBoost model") }
+    if (ml_model == 'xg.boost' && length(genes) < 60) {
+        message("For XGBoost model recommended input genes must be more than 60")}
+    if (ml_model == 'svm' ) {
+        message("This will take few minutes");
+        if( n_bootstrap < 5) { message("recommended n_bootstrap is at least 5 for SVM model")}
+        }
 
-    if (missing(ml_model)) {ml_model = 'random.forest'; print('Default random forest model is selected')}
-    if (missing(n_bootstrap)) {n_bootstrap = 3; print('Default n bootstrap iterations is set to 3')}
-    if (n_bootstrap < 2) {stop('Bootstrap n must be more than 1')}
 
+present0 <- grep('peakscores_all', ls(envir=.GlobalEnv))
+present1 <- grep('peakscores_tf', ls(envir=.GlobalEnv))
 
-present0 <- grep('peakscores', ls(envir=.GlobalEnv))
-if (length(present0) == 0) {
-    print('Loading data...')
+if (length(present0) == 0 || length(present1) == 0) {
+    message('Loading data...')
 
 meta_peak_name_tissue_path <<- system.file("extdata", "meta_name_tissue_peakscores.csv", package = "GFPredict")
 meta_peak_name_tissue <<- as.matrix(data.table::fread(meta_peak_name_tissue_path))
@@ -60,16 +65,31 @@ meta_peak <<- as.matrix(data.table::fread(meta_peak_path, header = T))
 unionPeaks_path <<- system.file("extdata", "unionpeak2.0", package = "GFPredict")
 unionPeaks <<- as.matrix(data.table::fread(unionPeaks_path, header=F));
 
-peakscores <<- matrix(NA, 89747, 0)
-for (p_file in 1:11) {
-file_name = paste('peakscores', p_file, '.rds', sep = "") 
+peakscores_all <<- matrix(NA, 89747, 0)
+for (p_file in 1:42) {
+file_name = paste('peakall', p_file, '.rds', sep = "") 
 peakscore_path <- system.file("extdata", file_name, package = "GFPredict")
 peakscore_n <- readRDS(peakscore_path)
-peakscores <<- cbind(peakscores, peakscore_n)
+peakscores_all <<- cbind(peakscores_all, peakscore_n)
 }
 
+    message('...')
 
+peakscores_tf <<- matrix(NA, 89747, 0)
+for (p_file in 1:18) {
+file_name = paste('peaktf', p_file, '.rds', sep = "") 
+peakscore_path <- system.file("extdata", file_name, package = "GFPredict")
+peakscore_n <- readRDS(peakscore_path)
+peakscores_tf <<- cbind(peakscores_tf, peakscore_n)
 }
+}
+
+if (feature_type == 'all_features'){
+    peakscores <- peakscores_all}
+
+if (feature_type == 'transcription_factors'){
+    peakscores <- peakscores_tf }
+
 
 updim = dim(unionPeaks) ;
 pos = which( unionPeaks[,4] %in% genes ) ;
@@ -119,6 +139,7 @@ return(sen_spe_cut)
 for (iter in 1:n_bootstrap) {
 sen_spe_cut <- matrix(NA, 0, 9) ; 
 colnames(sen_spe_cut) <- c("Iterations", "cutoff", "accuracy", "balanced-accuracy", "recall/sensitivity", "specificity", "F1", "MCC", "error-rate") ; 
+set.seed(iter)
 negRows = sample(1:updim[1], length(pos), 1) ;
 negScores = peakscores[as.numeric(negRows),] ;
 negScores = peakscores[negRows,] ;
@@ -160,7 +181,6 @@ allpred[,iter] = finalpred ;
 sen_spe_i <- calculate_results(result, yout_test)
 if (length(sen_spe_i) == 0) {stop("Please try a different model (recommended: 'random.forest' or 'svm')")}
 sen_spe_mat_i[iter,] <-  sen_spe_i
-print(iter)
 }
 
 ################################################################################################################################################
@@ -412,15 +432,13 @@ for (top_i in 1:nrow(display_top_pred)) {
     display_top_pred[top_i, c(3,4)] <- meta_peak_name_tissue[replace1, c(2,3)]}
     repalce_2 <- which(meta_peak[,1] %in% display_top_pred[top_i,1])
     display_top_pred[top_i, 2] <- meta_peak[repalce_2,2]
-
 }
-
 }
 
 allpred_final <-  rowSums(allpred)/nrow(allpred)
+unionPeaks_scores <- cbind(unionPeaks[,4], as.numeric(allpred_final))
 
-
-i1 <- seq(min(allpred_final), max(allpred_final), by = max(allpred_final) / 10)
+i1 <- seq(min(allpred_final), max(allpred_final), by = max(allpred_final) / 10) ##creating intervels for looping
 
 tpr_mat <- matrix(0, length(i1), 2)
 for (cut_off in 1:length(i1)) {
@@ -433,7 +451,9 @@ for (cut_off in 1:length(i1)) {
 }
 
 tpr_final = tpr_mat[which(tpr_mat[,2] == max(tpr_mat[,2])),1]
-predicted_genes_pre <- unique(unionPeaks[which(allpred_final >= tpr_final),4])
+predicted_genes_pre_unorder <- unionPeaks_scores[which(allpred_final >= tpr_final),]
+predicted_genes_pre_order <- predicted_genes_pre_unorder[order(predicted_genes_pre_unorder[,2], decreasing = T),]
+predicted_genes_pre <- unique(predicted_genes_pre_order[,1])
 if (length(which(predicted_genes_pre %in% genes)) != 0) {
 final_predicted_genes <- predicted_genes_pre[-which(predicted_genes_pre %in% genes)]
 } else {final_predicted_genes <- predicted_genes_pre}
@@ -442,23 +462,57 @@ final_predicted_genes <- predicted_genes_pre[-which(predicted_genes_pre %in% gen
 sen_spe_mat_final <- colSums(sen_spe_mat_i)/nrow(sen_spe_mat_i) #display and return
 print(sen_spe_mat_final)
 
-if (ml_model == 'linear.regression' || ml_model == 'logistic.regression' || ml_model == 'svm' || ml_model == 'xg.boost') {
-if(length(final_predicted_genes) >= 80) {print("Warning: Try a different ML model for better result, recommended: 'random.forest' or 'svm' ")}
-if(length(final_predicted_genes) == 0) {print("Try a different ML model, recommended: 'random.forest' or 'svm' ")}
-if(length(final_predicted_genes) < 80) {print('Predicted genes:'); print(final_predicted_genes)}
+if (ml_model == 'linear.regression' || ml_model == 'logistic.regression')  {
+if(length(final_predicted_genes) > 200) {
+    message("Try a different ML model for better result\nrecommended: ml_model = 'xg.boost' or 'svm' ")}
+if(length(final_predicted_genes) == 0 || length(final_predicted_genes) < 10) {
+    message("The number of predicted genes is less");
+    message("To fine-tune the predictions:\n Increase the number of input genes\n Or decrease/increase 'n_bootstrap' ");
+    message("Try a different ML model\nRecommended: 'random.forest' or 'svm' ") }
+if(length(final_predicted_genes) < 150) {message('Predicted genes:'); print(final_predicted_genes)}
 
+}
+
+if (ml_model == 'svm') {
+    if(length(final_predicted_genes) > 200) {
+        message("Number of predicted genes is too high\nfine-tune the model by increasing/decreasing the n_bootsrap");
+        message("Or try a different ML model for better result:\n ml_model = 'xg.boost' or 'random.forest' ")}
+    if(length(final_predicted_genes) == 0 || length(final_predicted_genes) < 10) {
+        message("The number of predicted genes is less");
+        message("To fine-tune the predictions:\n Increase the number of input genes\n Or decrease/increase 'n_bootstrap' ");
+        message("Try a different ML model: ml_model = 'random.forest' or 'xg.boost' ") }
+    if(length(final_predicted_genes) < 150) {message('Predicted genes:'); print(final_predicted_genes)}
+}
+
+if (ml_model == 'xg.boost') {
+    if(length(final_predicted_genes) > 200) {
+        message("Number of predicted genes is too high\nfine-tune the model by increasing/decreasing the n_bootsrap");
+        message("Or try a different ML model for better results:\n ml_model =  'svm' or 'random.forest'")}
+    if(length(final_predicted_genes) == 0 || length(final_predicted_genes) < 10) {
+        message("The number of predicted genes is less");
+        message("To fine-tune the predictions:\n Increase the number of input genes\n Or decrease/increase 'n_bootstrap' ");
+        message("Try a different ML model: ml_model = 'random.forest' or 'svm' ") }
+    if(length(final_predicted_genes) < 150) {message('Predicted genes:'); print(final_predicted_genes)}
 }
 
 ################## return the variables (results) ########## 
 if (ml_model == 'random.forest') {
     result_list_rf  = list(final_predicted_genes, sen_spe_mat_final, display_top_pred)
-    print('Top predictors:')
+    message('Top predictors:')
     print(display_top_pred)
-    if(length(final_predicted_genes) == 0) {print("Increase the number of genes or try 'svm' model ")}
-        if(length(final_predicted_genes) != 0) {print('Predicted genes:'); print(final_predicted_genes)}
+    if(length(final_predicted_genes) > 200) {
+        message("Number of predicted genes is too high\nfine-tune the model by increasing/decreasing the n_bootsrap");
+        message("Or try a different ML model for better results:\n ml_model =  'svm' or 'xg.boost'")}
+    if(length(final_predicted_genes) == 0 || length(final_predicted_genes) < 10) {
+        message("The number of predicted genes is less");
+        message("To fine-tune the predictions:\n Increase the number of input genes\n Or decrease/increase 'n_bootstrap' ");
+        message("Try a different ML model: ml_model = 'svm' or 'xg.boost' ") }
+    if(length(final_predicted_genes) < 150 || length(final_predicted_genes) >! 1) {
+        message('Predicted genes:');  print(final_predicted_genes) }
 
     return(result_list_rf) }
         else {return(list(final_predicted_genes, sen_spe_mat_final))}
+
 
 }
 
@@ -473,4 +527,11 @@ if (ml_model == 'random.forest') {
 # packageurl <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
 # install.packages(packageurl, repos=NULL, type="source")
 #install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/
+
+#############################################################################################################################
+#############################################################################################################################
+#############################################################################################################################
+
+
+
 
