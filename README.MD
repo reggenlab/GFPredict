@@ -75,9 +75,9 @@ Run the following scrips to reproduce the results showed in the [paper](https://
 
 Download the following files and set their location path inside ./code/functionML.R script:
 
--./data/pathway-genes.gmt.csv
--./data/unionpeak2.0
--peakscores from this [link](https://drive.google.com/file/d/10pjFdXjR_CqgZxTnUut7IceRpeDUXY2Y/view?usp=sharing)
+1. -./data/pathway-genes.gmt.csv
+2. -./data/unionpeak2.0
+3. -peakscores from this [link](https://drive.google.com/file/d/10pjFdXjR_CqgZxTnUut7IceRpeDUXY2Y/view?usp=sharing)
 
 **Step 2.** The output results will be saved inside folder '3'.
 
