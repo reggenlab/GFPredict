@@ -93,19 +93,26 @@ Run the following scrips to reproduce the results showed in the [paper](https://
 
 ### Results of random forest algorithm for 295 ontological gene-sets <a name="ontology_results"></a>
 
-**Step 1.**
-```shell
+**Step 1.** Download the 5 files (2 scripts and 3 data files) 
 
+```shell
+#script
 wget https://github.com/reggenlab/GFPredict/blob/main/R/predict_related_genes.R
 
+#features
+curl -Lb /tmp/gcokie "https://drive.google.com/uc?export=download&confirm=Uq6r&id=10pjFdXjR_CqgZxTnUut7IceRpeDUXY2Y" -o "peakscores_nc_all_normal.txt"
+
+#gene-sets
+wget https://github.com/reggenlab/GFPredict/blob/main/data/pathway-genes.gmt.csv
+
+#curated promoter sites
+wget https://github.com/reggenlab/GFPredict/blob/main/data/unionpeak2.0
+
 ```
-Download the following files and set their location path inside ./code/functionML.R script:
 
-1. -./data/pathway-genes.gmt.csv
-2. -./data/unionpeak2.0
-3. -peakscores from this [link](https://drive.google.com/file/d/10pjFdXjR_CqgZxTnUut7IceRpeDUXY2Y/view?usp=sharing)
+**Step 2.** Run the below two commands and the output results will be saved inside folder '3'.
 
-**Step 2.** The output results will be saved inside folder '3'.
+Make sure all the downloaded files and scripts are in the same directory.
 
 ```shell
 mkdir 3
