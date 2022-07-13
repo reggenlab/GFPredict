@@ -101,17 +101,15 @@ git clone https://github.com/reggenlab/GFPredict.git
 
 ```
 
-**Step 2.** Run the below two commands and the output results will be saved inside folder '3'.
+**Step 2.** Run the below two commands and the output results will be saved inside directory '/3' and ***make sure following R packages are installed:***
 
-***make sure following R packages are installed:***
-
-a. "ggplot2"
-b. "randomForest" 
-c. "glmnet"
-d. "ROCR"
-e. "xgboost"
-f. "mltest"
-g. "SHAPforxgboost"
+* "ggplot2"
+*  "randomForest" 
+*  "glmnet"
+*  "ROCR"
+*  "xgboost"
+*  "mltest"
+*  "SHAPforxgboost"
 
 ```shell
 #move to the directory condtaining R script
