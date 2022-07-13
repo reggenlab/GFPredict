@@ -21,7 +21,7 @@
 
 ## 1. GFPredict Package installation[![](./extras/images/pin.svg)]<a name="installation"></a>
 
-Download zip file and install the package:
+### Download zip file and install the package:
 
 **Step 1.** Download zip file.
 
@@ -32,11 +32,11 @@ wget https://github.com/reggenlab/GFPredict/archive/refs/heads/main.zip
 **Step 2.** Install the package in R session.
 
 ```r
-devtools::(install_local('main.zip'))
+devtools::install_local('main.zip')
 
 ```
 
-###Or use direct installation
+### Or use following installation through R commands.
 
 
 ``` r
