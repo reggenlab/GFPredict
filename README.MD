@@ -10,7 +10,7 @@
 2. [GFPredict usage examples](#examples)
 
 3. [Generate results used in the analyses of the paper](#results)
-   - [Results of random forest algorithm for 5917 ontological gene-sets](#ontology_results)
+   - [Results of random forest algorithm for 295 ontological gene-sets](#ontology_results)
    - [PUBMED-based abstract mining](#pubmed_abtract_mining)
    - [Clustering of functions](#function_cluster)
    - [Validation of predicted lncRNAs in clusters using CRISPR screens](#cluster_crispr_screen)
