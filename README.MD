@@ -21,20 +21,27 @@
 
 ## 1. GFPredict Package installation[![](./extras/images/pin.svg)]<a name="installation"></a>
 
-Install the package from GitHub repository:
-``` r
-options(timeout=9999999)
-devtools::install_github("reggenlab/GFPredict")
-```
+Download zip file and install the package:
 
-###Or
-
-Download zip file and install the package
+**Step 1.** Download zip file.
 
 ```shell
 wget https://github.com/reggenlab/GFPredict/archive/refs/heads/main.zip
 
+```
+**Step 2.** Install the package in R session.
 
+```r
+devtools::(install_local('main.zip'))
+
+```
+
+###Or use direct installation
+
+
+``` r
+options(timeout=9999999)
+devtools::install_github("reggenlab/GFPredict")
 ```
 
 In case of difficulty in installation of libraries,"randomForest", "xgboost" or "glmnet", run the following commands:
