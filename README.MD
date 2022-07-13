@@ -27,14 +27,6 @@ options(timeout=9999999)
 devtools::install_github("reggenlab/GFPredict")
 ```
 
-In case of difficulty in installation of libraries, "xgboost" and 'glmnet', run the following commands:
-``` r
-packageurl <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
-install.packages(packageurl, repos=NULL, type="source") #for xgboost
-
-install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/ 
-```
-
 ###Or
 
 Download zip file and install the package
@@ -42,6 +34,18 @@ Download zip file and install the package
 ```shell
 wget https://github.com/reggenlab/GFPredict/archive/refs/heads/main.zip
 
+
+```
+
+In case of difficulty in installation of libraries,"randomForest", "xgboost" or "glmnet", run the following commands:
+``` r
+packageurl_xgboost <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
+install.packages(packageurl_xgboost, repos=NULL, type="source") #for xgboost
+
+install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/ 
+
+packageurl_rf <- "https://cran.r-project.org/src/contrib/Archive/randomForest/randomForest_4.6-12.tar.gz"
+install.packages(packageurl_rf, repos=NULL, type="source") 
 
 ```
 
