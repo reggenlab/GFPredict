@@ -65,13 +65,13 @@ result[[3]] # contains table of top predictors (if ml_model = random.forest)
 
 ---
 
-## Generate all results used in the analyses of the paper [![](./extras/images/pin.svg)]<a name="results"></a>
+## Generate results used in the analyses of the paper [![](./extras/images/pin.svg)] <a name="results"></a>
 
 Run the following scrips to reproduce the results showed in the [paper](https://www.biorxiv.org/content/10.1101/2022.04.17.488570v1)
 
-#### Results of random forest algorithm for 295 ontological gene-sets
+#### Results of random forest algorithm for 295 ontological gene-sets <a name="ontology_results"></a>
 
-**STEP 1.:**
+**Step 1.**
 
 Download the following files and set their location path inside ./code/functionML.R script:
 
@@ -79,7 +79,7 @@ Download the following files and set their location path inside ./code/functionM
 -./data/unionpeak2.0
 -peakscores from this [link](https://drive.google.com/file/d/10pjFdXjR_CqgZxTnUut7IceRpeDUXY2Y/view?usp=sharing)
 
-**STEP 2.:** The output results will be saved inside folder '3'.
+**Step 2.** The output results will be saved inside folder '3'.
 
 ```shell
 mkdir 3
@@ -87,15 +87,14 @@ mkdir 3
 R CMD BATCH '--args  starti=1 endi=295  MLmodel=3  outf="3/f-1-295.txt" TPRf="3/TPR-1-295.txt" FDRf="3/FDR-1-295.txt" predf="3/pred-1-295.txt" scoresf="3/scores-1-295.txt" toptf="3/tfs-1-295.txt"  cfmtx="3/cf-1-295.txt" toptf_score="3/tf_score-1-295.txt" toptf_cor="3/tf_cor-1-295.txt" '  functionML.R  &
 
 ```
-**STEP 3.:** Run the  ./code/calculate_tpr_predict_genes.py script by changing
+**Step 3.** Run the  ./code/calculate_tpr_predict_genes.py script after *ensuring path to input files* (unionpeak2.0 and pathway-genes.gmt.csv) are correct.
 
+```shell
 
+python calculate_tpr_predict_genes.py
 
-
-
-To get the predictions run the two scripts: functionML.R and calculate_tpr_predict_genes.py 
-Running for 295 gene sets in parallel:
-
+```
 <!-- markdownlint-enable -->
 
+Finally, output file names 'tpr_ml3_all_onto1.csv' will contain predicted genes for all the 295 gene-sets.
 
