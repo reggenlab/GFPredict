@@ -21,7 +21,7 @@
 
 ## 1. GFPredict Package installation[![](./extras/images/pin.svg)]<a name="installation"></a>
 
-### Download zip file and install the package:
+### Download zip file and install the package (recommended):
 
 **Step 1.** Download zip file.
 
@@ -36,7 +36,7 @@ devtools::install_local('main.zip')
 
 ```
 
-### Or use following installation through R commands.
+### Or install through R commands.
 
 
 ``` r
