@@ -94,7 +94,11 @@ Run the following scrips to reproduce the results showed in the [paper](https://
 ### Results of random forest algorithm for 295 ontological gene-sets <a name="ontology_results"></a>
 
 **Step 1.**
+```shell
 
+wget https://github.com/reggenlab/GFPredict/blob/main/R/predict_related_genes.R
+
+```
 Download the following files and set their location path inside ./code/functionML.R script:
 
 1. -./data/pathway-genes.gmt.csv
