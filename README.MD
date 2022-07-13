@@ -10,16 +10,16 @@
 2. [GFPredict usage examples](#examples)
 
 3. [Generate results used in the analyses of the paper](#results)
-   - [Results of random forest algorithm for 5917 ontological gene-sets](#ontology_results)
-   - [PUBMED-based abstract mining](#pubmed_abtract_mining)
-   - [Clustering of functions](#function_cluster)
-   - [Validation of predicted lncRNAs in clusters using CRISPR screens](#cluster_crispr_screen)
-   - [GFPredict testing using different CRISPR screens](#different_crispr_screen)
+   - a.[Results of random forest algorithm for 5917 ontological gene-sets](#ontology_results)
+   - b. [PUBMED-based abstract mining](#pubmed_abtract_mining)
+   - c. [Clustering of functions](#function_cluster)
+   - d. [Validation of predicted lncRNAs in clusters using CRISPR screens](#cluster_crispr_screen)
+   - e. [GFPredict testing using different CRISPR screens](#different_crispr_screen)
 
 
 ---
 
-## GFPredict Package installation[![](./extras/images/pin.svg)]<a name="installation"></a>
+## 1. GFPredict Package installation[![](./extras/images/pin.svg)]<a name="installation"></a>
 
 Install the package through GitHub repository:
 ``` r
@@ -36,7 +36,7 @@ install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/con
 ```
 ---
 
-## GFPredict usage examples [![](./extras/images/pin.svg)]<a name="examples"></a>
+## 2. GFPredict usage examples [![](./extras/images/pin.svg)]<a name="examples"></a>
 
 After the installation:
 
@@ -65,11 +65,11 @@ result[[3]] # contains table of top predictors (if ml_model = random.forest)
 
 ---
 
-## Generate results used in the analyses of the paper [![](./extras/images/pin.svg)] <a name="results"></a>
+## 3. Generate results used in the analyses of the paper [![](./extras/images/pin.svg)] <a name="results"></a>
 
 Run the following scrips to reproduce the results showed in the [paper](https://www.biorxiv.org/content/10.1101/2022.04.17.488570v1)
 
-### Results of random forest algorithm for 295 ontological gene-sets <a name="ontology_results"></a>
+### a. Results of random forest algorithm for 295 ontological gene-sets <a name="ontology_results"></a>
 
 **Step 1.**
 
