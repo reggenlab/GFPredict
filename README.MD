@@ -21,7 +21,7 @@
 
 ## 1. GFPredict Package installation[![](./extras/images/pin.svg)]<a name="installation"></a>
 
-Install the package through GitHub repository:
+Install the package from GitHub repository:
 ``` r
 options(timeout=9999999)
 devtools::install_github("reggenlab/GFPredict")
