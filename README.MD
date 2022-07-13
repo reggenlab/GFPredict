@@ -93,29 +93,31 @@ Run the following scrips to reproduce the results showed in the [paper](https://
 
 ### Results of random forest algorithm for 295 ontological gene-sets <a name="ontology_results"></a>
 
-**Step 1.** Download the 5 files (2 scripts and 3 data files) 
+**Step 1.** Clone the GitHub repository 
 
 ```shell
 #script
-wget https://github.com/reggenlab/GFPredict/blob/main/R/predict_related_genes.R
-
-#features
-curl -Lb /tmp/gcokie "https://drive.google.com/uc?export=download&confirm=Uq6r&id=10pjFdXjR_CqgZxTnUut7IceRpeDUXY2Y" -o "peakscores_nc_all_normal.txt"
-
-#gene-sets
-wget https://github.com/reggenlab/GFPredict/blob/main/data/pathway-genes.gmt.csv
-
-#curated promoter sites
-wget https://github.com/reggenlab/GFPredict/blob/main/data/unionpeak2.0
+git clone https://github.com/reggenlab/GFPredict.git
 
 ```
 
 **Step 2.** Run the below two commands and the output results will be saved inside folder '3'.
 
-Make sure all the downloaded files and scripts are in the same directory.
+***make sure following R packages are installed:***
+
+a. "ggplot2"
+b. "randomForest" 
+c. "glmnet"
+d. "ROCR"
+e. "xgboost"
+f. "mltest"
+g. "SHAPforxgboost"
 
 ```shell
-mkdir 3
+#move to the directory condtaining R script
+cd GFPredict/code
+
+#run the script functionML.R.
 
 R CMD BATCH '--args  starti=1 endi=295  MLmodel=3  outf="3/f-1-295.txt" TPRf="3/TPR-1-295.txt" FDRf="3/FDR-1-295.txt" predf="3/pred-1-295.txt" scoresf="3/scores-1-295.txt" toptf="3/tfs-1-295.txt"  cfmtx="3/cf-1-295.txt" toptf_score="3/tf_score-1-295.txt" toptf_cor="3/tf_cor-1-295.txt" '  functionML.R  &
 
