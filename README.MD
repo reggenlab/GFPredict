@@ -111,12 +111,13 @@ git clone https://github.com/reggenlab/GFPredict.git
 *  "mltest"
 *  "SHAPforxgboost"
 
+** Note: It will take up to 20 minutes to completely run the code. **
+
 ```shell
 #move to the directory condtaining R script
 cd GFPredict/code
 
 #run the script functionML.R.
-
 R CMD BATCH '--args  starti=1 endi=295  MLmodel=3  outf="3/f-1-295.txt" TPRf="3/TPR-1-295.txt" FDRf="3/FDR-1-295.txt" predf="3/pred-1-295.txt" scoresf="3/scores-1-295.txt" toptf="3/tfs-1-295.txt"  cfmtx="3/cf-1-295.txt" toptf_score="3/tf_score-1-295.txt" toptf_cor="3/tf_cor-1-295.txt" '  functionML.R  &
 
 ```
