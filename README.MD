@@ -34,6 +34,17 @@ install.packages(packageurl, repos=NULL, type="source") #for xgboost
 
 install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/ 
 ```
+
+###Or
+
+Download zip file and install the package
+
+```shell
+wget https://github.com/reggenlab/GFPredict/archive/refs/heads/main.zip
+
+
+```
+
 ---
 
 ## 2. GFPredict usage examples [![](./extras/images/pin.svg)]<a name="examples"></a>
