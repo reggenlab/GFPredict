@@ -26,13 +26,13 @@
 **Step 1.** Download zip file.
 
 ```shell
-wget https://github.com/reggenlab/GFPredict/archive/refs/heads/main.zip
+$ wget https://github.com/reggenlab/GFPredict/archive/refs/heads/main.zip
 
 ```
 **Step 2.** Install the package in R session.
 
 ```r
-devtools::install_local('main.zip')
+> devtools::install_local('main.zip')
 
 ```
 
@@ -46,13 +46,13 @@ devtools::install_github("reggenlab/GFPredict")
 
 In case of difficulty in installation of libraries,"randomForest", "xgboost" or "glmnet", run the following commands:
 ``` r
-packageurl_xgboost <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
-install.packages(packageurl_xgboost, repos=NULL, type="source") #for xgboost
+> packageurl_xgboost <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
+> install.packages(packageurl_xgboost, repos=NULL, type="source") #for xgboost
 
-install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/ 
+> install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/ 
 
-packageurl_rf <- "https://cran.r-project.org/src/contrib/Archive/randomForest/randomForest_4.6-12.tar.gz"
-install.packages(packageurl_rf, repos=NULL, type="source") 
+> packageurl_rf <- "https://cran.r-project.org/src/contrib/Archive/randomForest/randomForest_4.6-12.tar.gz"
+> install.packages(packageurl_rf, repos=NULL, type="source") 
 
 ```
 
@@ -63,25 +63,25 @@ install.packages(packageurl_rf, repos=NULL, type="source")
 After the installation:
 
 ``` r
-library(GFPredict)
+> library(GFPredict)
 
-cell_cycle_related_genes <- c("RPL23A", "IPO4", "TARS1", "COG4", "TEX10", "TRMT112", "TXNL4A", "CLP1", 
+> cell_cycle_related_genes <- c("RPL23A", "IPO4", "TARS1", "COG4", "TEX10", "TRMT112", "TXNL4A", "CLP1", 
 "HSPA5", "ANAPC4", "RNF168", "ATP5F1D", "RUVBL2", "NMT1", "PNKP", "SF3B3", "FDPS", "FARSB", "HARS1",
 "RPL8", "CCT3", "AQR", "MCL1", "CENPM") 
 
-result <- predict_related_genes(cell_cycle_related_genes) #Default parameter are selected
+> result <- predict_related_genes(cell_cycle_related_genes) #Default parameter are selected
 
-#Fine tune the model by changing the number of bootstraps of the negative set
-result <- predict_related_genes(genes = cell_cycle_related_genes, n_bootstrap = 5)
+> #Fine tune the model by changing the number of bootstraps of the negative set
+> result <- predict_related_genes(genes = cell_cycle_related_genes, n_bootstrap = 5)
 
-#Use different ML algorithm if the model performance is not good after using the default random forest algoritm 
-result <- predict_related_genes(genes = cell_cycle_related_genes, ml_model = 'svm', n_bootstrap = 10, feature_type = 'transcription_factors')
+> #Use different ML algorithm if the model performance is not good after using the default random forest algoritm 
+> result <- predict_related_genes(genes = cell_cycle_related_genes, ml_model = 'svm', n_bootstrap = 10, feature_type = 'transcription_factors')
 
-result[[1]] # contains list of predicted genes 
+> result[[1]] # contains list of predicted genes 
 
-result[[2]] # contains table of model performance metrics 
+> result[[2]] # contains table of model performance metrics 
 
-result[[3]] # contains table of top predictors (if ml_model = random.forest)
+> result[[3]] # contains table of top predictors (if ml_model = random.forest)
 
 ```
 
