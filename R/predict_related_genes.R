@@ -515,23 +515,3 @@ if (ml_model == 'random.forest') {
 
 
 }
-
-#devtools::document()
-# 'xg.boost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
-# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'linear.regression')
-# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'logistic.regression')
-# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'random.forest')
-# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'svm')
-# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'xg.boost')
-
-# packageurl <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
-# install.packages(packageurl, repos=NULL, type="source")
-#install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/
-
-#############################################################################################################################
-#############################################################################################################################
-#############################################################################################################################
-
-
-
-
