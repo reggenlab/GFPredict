@@ -49,7 +49,7 @@ cell_cycle_related_genes <- c("RPL23A", "IPO4", "TARS1", "COG4", "TEX10", "TRMT1
 
 result <- predict_related_genes(cell_cycle_related_genes) #Default parameter are selected
 
-#fine tune the model by changing the number of bootstraps of the negative set
+#Fine tune the model by changing the number of bootstraps of the negative set
 result <- predict_related_genes(genes = cell_cycle_related_genes, n_bootstrap = 5)
 
 #Use different ML algorithm if the model performance is not good after using the default random forest algoritm 
