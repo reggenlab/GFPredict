@@ -2,46 +2,44 @@
 % Please edit documentation in R/predict_related_genes.R
 \name{predict_related_genes}
 \alias{predict_related_genes}
-\title{The function makes gene prediction based on shared transcription factors
+\title{The function makes gene prediction based on similarity in shared transcription factors
 and epigenomic marks present across promoter sites of the genes}
 \usage{
-predict_related_genes(genes, ml_model, n_bootstrap)
+predict_related_genes(genes, ml_model, n_bootstrap, feature_type)
 }
 \arguments{
 \item{genes}{Object of class list, containing functionally related genes}
 
-\item{ml_model}{Object of class string, Machine learning model to select. Options: random.forest (default),
-'xg.boost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'}
+\item{ml_model}{Object of class string, Machine learning model to select. Options:
+'xg.boost' , 'svm', 'random.forest' (default), 'linear.regression', 'logistic.regression'}
 
-\item{n_bootstrap}{Number of bootstrapping of the features (n = 3 by default)}
+\item{n_bootstrap}{Number of bootstraps of the negative samples (n = 3 by default)}
+
+\item{feature_type}{Object of class string. Type of features to train the model. Options: 'all_features' (default), 'transcription_factors'}
 }
 \value{
 List containing predicted gene, top predictors (if ml_model = 'random forest') and ML model performance metrics
 }
 \description{
-The function makes gene prediction based on shared transcription factors
+The function makes gene prediction based on similarity in shared transcription factors
 and epigenomic marks present across promoter sites of the genes
 }
 \examples{
-breast_cancer_genes <- c("PTGS2", "ARID1A", "NFKB1",	"TFF2",
-"STK11",	"HRAS",	"MSH2",	 "CTNNB1", "MEN1",	"HIF1A", "MTHFR", "MAP2K4",
-"AKT1",	"XRCC1", "S100P", "KLF5", "PARK2","NR5A2", "CLPTM1L", "GLI1",
-"CDH1", "VEGFA",	"S100A4", "CXCR4", "BRCA1", "SHH", "PRSS1", "TERT",
- "IGF1R", "TP53", "IL6",	"ITGB1", "BRCA2", "PALB2", "MET", "CD44",
- "MUC4",	"MSLN",	"SSTR2", "TNF", "MUC4", "MSLN",	"SSTR2", "TNF",
- "KRAS",	"SMAD4", "TGFB1", "ERBB2", "ROBO2",	"ATM", "BIRC5",	"MMP9",
- "PTEN",	"STAT3", "EGFR", "MMP2") 
+cell_cycle_related_genes <- c("RPL23A", "IPO4", "TARS1", "COG4", "TEX10", "TRMT112", "TXNL4A", "CLP1", 
+"HSPA5", "ANAPC4", "RNF168", "ATP5F1D", "RUVBL2", "NMT1", "PNKP", "SF3B3", "FDPS", "FARSB", "HARS1",
+"RPL8", "CCT3", "AQR", "MCL1", "CENPM") 
  Reference: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5642621/
 
-result <- predict_related_genes(breast_cancer_genes)
+result <- predict_related_genes(genes = cell_cycle_related_genes)
 
-result <- predict_related_genes(breast_cancer_genes, ml_model = 'svm', n_bootstrap = 3)
+result <- predict_related_genes(genes = cell_cycle_related_genes, n_bootstrap = 5)
 
-result <- predict_related_genes(breast_cancer_genes, ml_model = 'xg.boost', n_bootstrap = 5)
+result <- predict_related_genes(genes = cell_cycle_related_genes, ml_model = 'svm', n_bootstrap = 10, feature_type = 'transcription_factors')
 
-result[[1]] # list of predicted genes
+result[[1]] # contains list of predicted genes 
 
-result[[2]] # Table performance metrics 
+result[[2]] # contains table of model performance metrics 
 
-result[[3]] # Table containing top predictors (if ml_model = random.forest)
+result[[3]] # contains table of top predictors (if ml_model = random.forest)
+
 }

@@ -6,7 +6,7 @@
 \alias{GFPredict-package}
 \title{GFPredict: Predicts functionally related genes based on shared epigenomic and transcription factor binding patterns}
 \description{
-The genes in the user query gene-sets are considered as positive and genes are randomly picked from our curated list as negatives and are not annotated in the user gene-sets and gene function prediction is treated as a classification problem. Out of possible 50000 genes, if we expected the number of positive unknown genes belonging to a function is less than 100. Then if we were to pick 100 genes (as negatives) out of 50000 genes, there is less than 0.002 (100/500000) probability of having unknown positives in the negative set. For each gene-set, we choose an equal number of negatives to positives. We divide the positives and negatives into a training set (75%) and a test set (25%). The 5 different machine learning models for each gene-set are Random Forest, XGBoost, SVM (support vector machine), linear regression-based Lasso, and logistic regression.
+This package contains function: 'predicted_related_genes' that predicts coding and non-coding genes related to (user input) gene-sets. GFPredict compares the similarity between the epigenomic and transcription factor binding patterns at the promoter sites of the input genes and other genes, to make predictions.
 }
 \seealso{
 Useful links:
@@ -20,11 +20,6 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Madhu Sharma
-  \item Neetesh Pandey
-  \item Indra Prakash Jha
-  \item Shreya Mishra
-  \item Say Li Kong
   \item Vibhor Kumar \email{vibhor@iiitd.ac.in}
 }
 
