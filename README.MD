@@ -10,11 +10,11 @@
 2. [GFPredict usage examples](#examples)
 
 3. [Generate results used in the analyses of the paper](#results)
-   - a.[Results of random forest algorithm for 5917 ontological gene-sets](#ontology_results)
-   - b. [PUBMED-based abstract mining](#pubmed_abtract_mining)
-   - c. [Clustering of functions](#function_cluster)
-   - d. [Validation of predicted lncRNAs in clusters using CRISPR screens](#cluster_crispr_screen)
-   - e. [GFPredict testing using different CRISPR screens](#different_crispr_screen)
+   - [Results of random forest algorithm for 5917 ontological gene-sets](#ontology_results)
+   - [PUBMED-based abstract mining](#pubmed_abtract_mining)
+   - [Clustering of functions](#function_cluster)
+   - [Validation of predicted lncRNAs in clusters using CRISPR screens](#cluster_crispr_screen)
+   - [GFPredict testing using different CRISPR screens](#different_crispr_screen)
 
 
 ---
@@ -69,7 +69,7 @@ result[[3]] # contains table of top predictors (if ml_model = random.forest)
 
 Run the following scrips to reproduce the results showed in the [paper](https://www.biorxiv.org/content/10.1101/2022.04.17.488570v1)
 
-### a. Results of random forest algorithm for 295 ontological gene-sets <a name="ontology_results"></a>
+### Results of random forest algorithm for 295 ontological gene-sets <a name="ontology_results"></a>
 
 **Step 1.**
 
