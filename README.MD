@@ -67,7 +67,7 @@ library(GFPredict)
 
 cell_cycle_related_genes <- c("RPL23A", "IPO4", "TARS1", "COG4", "TEX10", "TRMT112", "TXNL4A", "CLP1", 
 "HSPA5", "ANAPC4", "RNF168", "ATP5F1D", "RUVBL2", "NMT1", "PNKP", "SF3B3", "FDPS", "FARSB", "HARS1",
-"RPL8", "CCT3", "AQR", "MCL1", "CENPM") 
+"RPL8", "CCT3", "AQR", "MCL1", "CENPM")
 
 result <- predict_related_genes(cell_cycle_related_genes) #Default parameter are selected
 
@@ -118,7 +118,7 @@ git clone https://github.com/reggenlab/GFPredict.git
 cd GFPredict/code
 
 #run the script functionML.R.
-R CMD BATCH '--args  starti=1 endi=295  MLmodel=3  outf="3/f-1-295.txt" TPRf="3/TPR-1-295.txt" FDRf="3/FDR-1-295.txt" predf="3/pred-1-295.txt" scoresf="3/scores-1-295.txt" toptf="3/tfs-1-295.txt"  cfmtx="3/cf-1-295.txt" toptf_score="3/tf_score-1-295.txt" toptf_cor="3/tf_cor-1-295.txt" '  functionalML.R  &
+nohup R CMD BATCH '--args  starti=1 endi=295  MLmodel=3  outf="3/f-1-295.txt" TPRf="3/TPR-1-295.txt" FDRf="3/FDR-1-295.txt" predf="3/pred-1-295.txt" toptf="3/tfs-1-295.txt"  cfmtx="3/cf-1-295.txt" '  functionalML.R  &
 
 ```
 **Step 3.** After getting output files in /3 directory, run the below command, predicted genes will be in the file.
@@ -130,5 +130,5 @@ python calculate_tpr_predict_genes.py
 ```
 <!-- markdownlint-enable -->
 
-Finally, output file names 'tpr_ml3_all_onto1.csv' will contain predicted genes for all the 295 gene-sets.
+The output file 'tpr_ml3_all_onto1.csv' will contain predicted genes for all the 295 gene-sets.
 
