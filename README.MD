@@ -115,7 +115,7 @@ git clone https://github.com/reggenlab/GFPredict.git
 
 ```shell
 #move to the directory condtaining R script
-cd GFPredict/code
+cd GFPredict/code/
 
 #run the script functionML.R.
 nohup R CMD BATCH '--args  starti=1 endi=295  MLmodel=3  outf="rf_result/f-1-295.txt" TPRf="rf_result/TPR-1-295.txt" FDRf="rf_result/FDR-1-295.txt" predf="rf_result/pred-1-295.txt" toptf="rf_result/tfs-1-295.txt"  cfmtx="rf_result/cf-1-295.txt" '  functionalML.R  &
@@ -124,13 +124,15 @@ nohup R CMD BATCH '--args  starti=1 endi=295  MLmodel=3  outf="rf_result/f-1-295
 **Step 3.** After getting output files in /3 directory, run the below command, predicted genes will be in the file.
 
 ```shell
-#run this to get final predicted genes
+
+#run this to get final predicted genes inside directory 'GFPredict/code/'.
 python3 calculate_tpr_predict_genes.py
 
 ```
 
 The output file 'predicted_genes.csv' will contain predicted genes for all the 295 gene-sets. Each row is a gene-set, corresponding columns contains predicted genes along with confidence score/tpr score
 
+---
 
 ### PUBMED-based abstract mining <a name="pubmed_abtract_mining"></a>
 
@@ -138,11 +140,14 @@ For the predicted genes (file can also be found at ../data/predicted_genes) of r
 Run pubmed-based abstract mining and plot the number of occurrences of predicted gene terms and corresponding function terms.
 
 ```shell
+#move to the directory containing script: pubmed_abtract_mining.py 
+cd GFPredict/code/
 
+#Run the script, can take up to 30-120 minutes depending on the NCBI's server 
 python3 pubmed_abtract_mining.py
 
 ```
-
+---
 
 ### Clustering of functions <a name="function_cluster"></a>
 
@@ -151,8 +156,15 @@ python3 pubmed_abtract_mining.py
 Run the below code to get plot of cluster of functions based on shared top predictors.
 
 ```shell
+#move to the directory containing script: clustering_functions.R
+cd GFPredict/code/
+
+#Run the below line
 Rscript clustering_functions.R
 ```
+---
+
+[Validation of predicted lncRNAs in clusters using CRISPR screens](#cluster_crispr_screen)
 
 
 <!-- markdownlint-enable -->
