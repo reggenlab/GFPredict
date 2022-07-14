@@ -132,7 +132,7 @@ python3 calculate_tpr_predict_genes.py
 The output file 'predicted_genes.csv' will contain predicted genes for all the 295 gene-sets. Each row is a gene-set, corresponding columns contains predicted genes along with confidence score/tpr score
 
 
-## PUBMED-based abstract mining (#pubmed_abtract_mining)
+### PUBMED-based abstract mining <a name="pubmed_abtract_mining"></a>
 
 For the predicted genes (file can also be found at ../data/predicted_genes) of random forest model: 
 Run pubmed-based abstract mining and plot the number of occurrences of predicted gene terms and corresponding function terms.
@@ -144,7 +144,7 @@ python3 pubmed_abtract_mining.py
 ```
 
 
-## Clustering of functions(#function_cluster)
+### Clustering of functions <a name="function_cluster"></a>
 
 **Note:** R package 'Rtsne' and  'factoextra' must be installed to run this code.
 
