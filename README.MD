@@ -134,10 +134,12 @@ The output file 'predicted_genes.csv' will contain predicted genes for all the 2
 ---
 
 
-### PUBMED-based abstract mining <a name="pubmed_abtract_mining"></a>
+### B. PUBMED-based abstract mining <a name="pubmed_abtract_mining"></a>
 
-For the predicted genes (file can also be found at ../data/predicted_genes) of random forest model: 
-Run pubmed-based abstract mining and plot the number of occurrences of predicted gene terms and corresponding function terms.
+For the predicted genes of 295 functions (file can also be found at ../data/predicted_genes.csv) of random forest model,
+run pubmed-based abstract mining and plot the number of occurrences of predicted gene terms and corresponding function terms.
+
+**Note:** Path inside the script for the input file is set to '../data/predicted_genes.csv', you can give your own result file obtained after section 3A. 
 
 ```shell
 #move to the directory containing script: pubmed_abtract_mining.py 
@@ -152,7 +154,7 @@ python3 pubmed_abtract_mining.py
 ---
 
 
-### Clustering of functions <a name="function_cluster"></a>
+### C. Clustering of functions <a name="function_cluster"></a>
 
 **Note:** R package 'Rtsne' and  'factoextra' must be installed to run this code.
 
@@ -167,8 +169,18 @@ Rscript clustering_functions.R
 ```
 ---
 
-### Validation of predicted lncRNAs in clusters using CRISPR screens <a name="cluster_crispr_screen"></a>
+### D. Validation of predicted lncRNAs in clusters using CRISPR screens <a name="cluster_crispr_screen"></a>
 
+```shell
+#move to directory containing script: lncrna_crispr_validation.R
+cd GFPredict/code/
+
+#Run the below line, two PDF files with bar plots will be generated
+Rscript lncrna_crispr_validation.R
+
+```
+
+### D. Validation of predicted lncRNAs in clusters using CRISPR screens <a name="cluster_crispr_screen"></a>
 
 
 <!-- markdownlint-enable -->
