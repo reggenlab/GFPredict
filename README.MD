@@ -26,7 +26,7 @@
 **Step 1.** Download zip file.
 
 ```shell
-$ wget https://github.com/reggenlab/GFPredict/archive/refs/heads/main.zip
+wget https://github.com/reggenlab/GFPredict/archive/refs/heads/main.zip
 
 ```
 **Step 2.** Install the package in R session.
@@ -124,11 +124,16 @@ nohup R CMD BATCH '--args  starti=1 endi=295  MLmodel=3  outf="rf_result/f-1-295
 **Step 3.** After getting output files in /3 directory, run the below command, predicted genes will be in the file.
 
 ```shell
-
-python calculate_tpr_predict_genes.py
+#run this to get final predicted genes
+python3 calculate_tpr_predict_genes.py
 
 ```
+
+The output file 'predicted_genes.csv' will contain predicted genes for all the 295 gene-sets. Each row is a gene-set, corresponding columns contains predicted genes along with confidence score/tpr score
+
+
+
+
+
+
 <!-- markdownlint-enable -->
-
-The output file 'tpr_ml3_all_onto1.csv' will contain predicted genes for all the 295 gene-sets.
-
