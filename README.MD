@@ -114,10 +114,10 @@ git clone https://github.com/reggenlab/GFPredict.git
 **Note: It will take up to 30 minutes to completely run the code, check the progress opening functionalML.Rout file**
 
 ```shell
-#move to the directory condtaining R script
-cd GFPredict/code
+#move to the directory condtaining R script, functionalML.R
+cd GFPredict/code/
 
-#run the script functionML.R.
+#run the script functionalML.R.
 nohup R CMD BATCH '--args  starti=1 endi=295  MLmodel=3  outf="rf_result/f-1-295.txt" TPRf="rf_result/TPR-1-295.txt" FDRf="rf_result/FDR-1-295.txt" predf="rf_result/pred-1-295.txt" toptf="rf_result/tfs-1-295.txt"  cfmtx="rf_result/cf-1-295.txt" '  functionalML.R  &
 
 ```
