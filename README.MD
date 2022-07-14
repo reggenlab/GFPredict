@@ -10,11 +10,11 @@
 2. [GFPredict usage examples](#examples)
 
 3. [Generate results used in the analyses of the paper](#results)
-   - [Results of random forest algorithm for 295 ontological gene-sets](#ontology_results)
-   - [PUBMED-based abstract mining](#pubmed_abtract_mining)
-   - [Clustering of functions](#function_cluster)
-   - [Validation of predicted lncRNAs in clusters using CRISPR screens](#cluster_crispr_screen)
-   - [GFPredict testing using different CRISPR screens](#different_crispr_screen)
+   - [A. Results of random forest algorithm for 295 ontological gene-sets](#ontology_results)
+   - [B. PUBMED-based abstract mining](#pubmed_abtract_mining)
+   - [C. Clustering of functions](#function_cluster)
+   - [D. Validation of predicted lncRNAs in clusters using CRISPR screens](#cluster_crispr_screen)
+   - [E. GFPredict testing using different CRISPR screens](#different_crispr_screen)
 
 
 ---
@@ -91,7 +91,7 @@ result[[3]] # contains table of top predictors (if ml_model = random.forest)
 
 Run the following scrips to reproduce the results showed in the [paper](https://www.biorxiv.org/content/10.1101/2022.04.17.488570v1)
 
-### Generateing results of random forest algorithm for 295 ontological gene-sets in **3 steps:** <a name="ontology_results"></a>
+### A. Generateing results of random forest algorithm for 295 ontological gene-sets in **3 steps:** <a name="ontology_results"></a>
 
 **Step 1.** Clone the GitHub repository. 
 
@@ -100,7 +100,6 @@ Run the following scrips to reproduce the results showed in the [paper](https://
 git clone https://github.com/reggenlab/GFPredict.git
 
 ```
-
 **Step 2.** Run the below two commands and the output results will be saved inside directory '/3'. ***Make sure following R packages are installed:***
 
 *  "ggplot2"
@@ -134,6 +133,7 @@ The output file 'predicted_genes.csv' will contain predicted genes for all the 2
 
 ---
 
+
 ### PUBMED-based abstract mining <a name="pubmed_abtract_mining"></a>
 
 For the predicted genes (file can also be found at ../data/predicted_genes) of random forest model: 
@@ -147,7 +147,10 @@ cd GFPredict/code/
 python3 pubmed_abtract_mining.py
 
 ```
+
+
 ---
+
 
 ### Clustering of functions <a name="function_cluster"></a>
 
@@ -164,7 +167,8 @@ Rscript clustering_functions.R
 ```
 ---
 
-[Validation of predicted lncRNAs in clusters using CRISPR screens](#cluster_crispr_screen)
+### Validation of predicted lncRNAs in clusters using CRISPR screens <a name="cluster_crispr_screen"></a>
+
 
 
 <!-- markdownlint-enable -->
