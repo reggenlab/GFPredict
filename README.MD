@@ -91,7 +91,7 @@ result[[3]] # contains table of top predictors (if ml_model = random.forest)
 
 Run the following scrips to reproduce the results showed in the [paper](https://www.biorxiv.org/content/10.1101/2022.04.17.488570v1)
 
-### Results of random forest algorithm for 295 ontological gene-sets <a name="ontology_results"></a>
+### Generateing results of random forest algorithm for 295 ontological gene-sets in **three steps:** <a name="ontology_results"></a>
 
 **Step 1.** Clone the GitHub repository 
 
