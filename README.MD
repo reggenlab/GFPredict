@@ -141,7 +141,7 @@ run pubmed-based abstract mining and plot the number of occurrences of predicted
 
 **Note:** Path inside the script for the input file is set to '../data/predicted_genes.csv', you can give your own result file obtained after section 3A. 
 
-Clone the [document]#clone
+Clone the [document](#clone)
 ```shell
 #move to the directory containing script: pubmed_abtract_mining.py 
 cd GFPredict/code/
