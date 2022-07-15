@@ -141,7 +141,8 @@ run pubmed-based abstract mining and plot the number of occurrences of predicted
 
 **Note:** Path inside the script for the input file is set to '../data/predicted_genes.csv', you can give your own result file obtained after section 3A. 
 
-Clone the [document](#clone)
+Clone the document using command from [3A.](#clone) and run the below commands.
+
 ```shell
 #move to the directory containing script: pubmed_abtract_mining.py 
 cd GFPredict/code/
@@ -159,6 +160,7 @@ python3 pubmed_abtract_mining.py
 
 **Note:** R package 'Rtsne' and  'factoextra' must be installed to run this code.
 
+Clone the document using command from [3A.](#clone).
 Run the below code to get plot of cluster of functions based on shared top predictors.
 
 ```shell
@@ -172,6 +174,8 @@ Rscript clustering_functions.R
 
 ### D. Validation of predicted lncRNAs in clusters using CRISPR screens <a name="cluster_crispr_screen"></a>
 
+Clone the document using command from [3A.](#clone).
+
 ```shell
 #move to directory containing script: lncrna_crispr_validation.R
 cd GFPredict/code/
@@ -183,5 +187,11 @@ Rscript lncrna_crispr_validation.R
 
 ### D. Validation of predicted lncRNAs in clusters using CRISPR screens <a name="cluster_crispr_screen"></a>
 
+Clone the document using command from [3A.](#clone) and run the below command.
 
+'''shell
+#The outputs will be PDFs containg barplots
+Rscript package_test_crispr.R 
+
+```
 <!-- markdownlint-enable -->
