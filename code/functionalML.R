@@ -1,19 +1,14 @@
 ## this is the main script, where different machine learning models are trained to make predicton
-
+## Note: We have given commands to run only random forest model, that is, ml_model = 3
 
 args=(commandArgs(TRUE))
-library("ggplot2")
-library("randomForest") ;
-library("caret")  
-library("e1071") ;
-library("magrittr") ;
-library("dplyr")   ; 
+library("ggplot2");
+library("randomForest"); 
 library("glmnet") ; 
 library("ROCR")
 library("xgboost") ;
 library("mltest")
 library("SHAPforxgboost")
-library("tidyverse")
 
 {
 
@@ -24,52 +19,48 @@ args=(commandArgs(TRUE))
 
 }
 
-peakscores <- read.table("peakscores_nc_all_normal.txt", sep = "", header = TRUE)
-pathwaygenes <- read.table("pathway-genes.gmt.csv", sep = "\t", header = F)
-unionPeaks <- read.table("unionpeak2.0", header=F)
+peakscores <<- matrix(NA, 89747, 0) # reading feature file
+for (p_file in 1:42) {
+file_name = paste('peakall', p_file, '.rds', sep = "") 
+peakscore_path <- paste("../inst/extdata", file_name, sep = "/")
+peakscore_n <- readRDS(peakscore_path)
+peakscores <<- cbind(peakscores, peakscore_n)
+}
+pathwaygenes <- read.table("../data/pathway-genes.gmt.csv", sep = "\t", header = F) #reading gene-set file
+unionPeaks <- read.table("../data/unionpeak2.0", header=F) #reading file containing curated promoters of genes 
 up = as.matrix(unionPeaks) ;
 pdim = dim(pathwaygenes) ;
 updim = dim(unionPeaks) ;
 rsquared <- matrix(0, pdim[1], 1);
 allcor = rsquared ;
 
-numfunc = endi - starti +1;
+numfunc = endi - starti +1; #initialing for for loop and creating matricies where results will be saved
 allpred = matrix(0, updim[1], numfunc); colnames(allpred) <- pathwaygenes[c(starti:endi), 1]
 aTPR = matrix(NA , numfunc , 1000) ;
 aFPR = matrix(NA , numfunc , 1000) ;
 aresults = matrix(NA , numfunc , 1000) ;
 alltfs <- matrix(NA, 20, numfunc) ; 
-sen_spe_cut <- matrix(NA, 1, 9) ; colnames(sen_spe_cut) <- c("function-ID", "cutoff", "accuracy", "balanced-accuracy", "recall/sensitivity", "specificity", "F1", "MCC", "error-rate") ; 
-shap_matrix <- matrix(NA, 1, 11 )
+sen_spe_cut <- matrix(NA, 1, 10) ; colnames(sen_spe_cut) <- c("function-ID", "function_name", "cutoff", "accuracy", "balanced-accuracy", "recall/sensitivity", "specificity", "F1", "MCC", "error-rate") ; 
 
-for (i in starti:endi)
+for (i in starti:endi) # interating through all the functions
  {  tryCatch({
 idx = i - starti + 1 ;	 
-  genes = pathwaygenes[i, 3:pdim[2]] ;
+  genes = pathwaygenes[i, 3:pdim[2]] ; #selecting positive genes
   pos = which(genes != "") ;
-  genes = as.matrix(genes[pos]) ;
+  genes = as.matrix(genes[pos]) ; #selecting positive genes
   pos = which( up[,4] %in% genes ) ;
-  posScores = peakscores[pos,] ;
+  posScores = peakscores[pos,] ; #selecting the peakscore values (features) for the genes 
   posdim = dim(posScores) ;
 #  set.seed(2014)
-  negRows = sample(1:updim[1], length(pos), 1) ;
-  negScores = peakscores[negRows,] ;
+  negRows = sample(1:updim[1], length(pos), 1) ; #selecting 
+  negScores = peakscores[negRows,] ; ) ; #selecting the peakscore values (features) for the negative genes 
   ascores = rbind(posScores , negScores) ;
   ascores = as.matrix(ascores)
   yout = matrix(0, (posdim[1] * 2), 1) ;
   yout[1:posdim[1]] =1 ;
-  ######## up sample if the length of the positive class is less #######
-if (length(pos) < 50) {
-                yout <- as.matrix(yout)
-                colnames(yout) <- "Class"
-                yout <- as.factor(yout)
-                sampled <- upSample(ascores, yout, list = TRUE, yname = "Class")
-                yout <- as.matrix(sampled$y)
-                ascores <- as.matrix(sampled$x)
-        }
 
 
-samp_yout<- floor(0.75 * nrow(yout))
+samp_yout<- floor(0.75 * nrow(yout))  #dividing the data into training and test
 train_yout<-sample(seq_len(nrow(yout)), size = samp_yout); train_yout <- as.matrix(train_yout)
 test_yout =  sample((1:nrow(yout))[-train_yout]);
 yout_test <- yout[test_yout]; yout_test <- as.numeric(yout_test)
@@ -77,7 +68,12 @@ ascores_test <- ascores[test_yout,] ;
 yout_training <- yout[train_yout]; yout_training <- as.numeric(yout_training)
 ascores_training <- ascores[train_yout,]
 
- if(MLmodel == 1) {
+#logistic regression model
+ if(MLmodel == 1) { #different types of models can be trained depending on the number mentioned in the script
+    present0 <- grep('lnr_result', ls(envir=.GlobalEnv))
+    if (length(present0) == 0 ) {
+    system("mkdir lnr_result")}
+
  yout_test <- data.matrix(yout_test); yout_test <- as.numeric(yout_test)
  yout_training <- data.matrix(yout_training)
  ascores_training <- data.matrix (ascores_training)
@@ -86,12 +82,12 @@ ascores_training <- ascores[train_yout,]
 
  newx = data.matrix(ascores_test)
  result = predict( newx= ascores_test, glm_train, s='lambda.min') ;
- finalpred = predict( glm_train, data.matrix(peakscores)) ;
+ finalpred = predict( glm_train, data.matrix(peakscores)) ; #predicting the probablilities for all the promoters of the genes
  
  sidx = order(result, decreasing=TRUE) ;
  labels <- yout_test[sidx] ;
 
- TPR=cumsum(labels)/sum(labels); FPR= cumsum(!labels)/sum(!labels);
+ TPR=cumsum(labels)/sum(labels); FPR= cumsum(!labels)/sum(!labels); #True positive rate and false positive rate calculation
  aTPR[ idx,1:length(TPR) ] = TPR ;
  aFPR[ idx,1:length(FPR) ] = FPR ;
  aresults[ idx,1:length(result) ] = result[sidx] ;
@@ -101,7 +97,7 @@ ascores_training <- ascores[train_yout,]
  predicate <- prediction(result, yout_test)
 roc.perf = performance(predicate, measure = "tpr", x.measure = "fpr")
 perf <- performance(predicate,"tpr","fpr")
-opt.cut = function(perf, predicate){
+opt.cut = function(perf, predicate){ #function to calculate best cutoff for highest balanced accuracy
     cut.ind = mapply(FUN=function(x, y, p){
         d = (x - 0)^2 + (y-1)^2
         ind = which(d == min(d))
@@ -112,15 +108,20 @@ opt.cut = function(perf, predicate){
 cutoff <- c(idx,opt.cut(roc.perf, predicate ))
 predicted_result <- ifelse(result>cutoff[4], 1, 0)
 x_report <- ml_test(predicted_result, yout_test) ; funcID <- starti + idx -1
-report <- c(funcID, cutoff[4], x_report$accuracy, x_report$balanced.accuracy[2], x_report$recall[2], x_report$specificity[2], x_report$F1[2], x_report$MCC[2], x_report$error.rate)
+report <- c(funcID, pathwaygenes[i,1], cutoff[4], x_report$accuracy, x_report$balanced.accuracy[2], x_report$recall[2], x_report$specificity[2], x_report$F1[2], x_report$MCC[2], x_report$error.rate)
 report <- as.matrix(report) ; report <- t(report)
 sen_spe_cut <- rbind(sen_spe_cut, report)
-print(i)
+cat(paste0(round(i / numfunc * 100), ' gene-sets completed'))
+if (i == numfunc) cat(': Done') else cat('\014')
+
 }
 
 
-if(MLmodel == 2) {
-	
+if(MLmodel == 2) { #linerar regression
+	present0 <- grep('lgr_result', ls(envir=.GlobalEnv))
+    if (length(present0) == 0 ) {
+    system("mkdir lgr_result")}
+
  yout_test <- data.matrix(yout_test)
  yout_training <- data.matrix(yout_training)
  lm_train2 <- cv.glmnet(ascores_training , yout_training, alpha = 1)
@@ -129,10 +130,10 @@ if(MLmodel == 2) {
  newx = data.matrix(ascores_test)
  result = predict( newx= ascores_test, glm_train, s='lambda.min') ;
 
-finalpred = predict( glm_train , data.matrix(peakscores)) ;
+finalpred = predict( glm_train , data.matrix(peakscores)) ; #predicting the probablilities for all the promoters of the genes
 sidx = order(result, decreasing=TRUE) ;
 labels <- yout_test[sidx]
-TPR=cumsum(labels)/sum(labels); 
+TPR=cumsum(labels)/sum(labels); #True positive rate and false positive rate calculation
 FPR= cumsum(!labels)/sum(!labels) ;
 aTPR[ idx,1:length(TPR) ] = TPR ;
 aFPR[ idx,1:length(FPR) ] = FPR ;
@@ -143,7 +144,7 @@ allpred[,idx] = finalpred ;
 predicate <- prediction(result, yout_test)
 roc.perf = performance(predicate, measure = "tpr", x.measure = "fpr")
 perf <- performance(predicate,"tpr","fpr")
-opt.cut = function(perf, predicate){
+opt.cut = function(perf, predicate){ #function to calculate best cutoff for highest balanced accuracy
     cut.ind = mapply(FUN=function(x, y, p){
         d = (x - 0)^2 + (y-1)^2
         ind = which(d == min(d))
@@ -154,36 +155,42 @@ opt.cut = function(perf, predicate){
 cutoff <- c(idx,opt.cut(roc.perf, predicate ))
 predicted_result <- ifelse(result>cutoff[4], 1, 0)
 x_report <- ml_test(predicted_result, yout_test) ; funcID <- starti + idx -1
-report <- c(funcID, cutoff[4], x_report$accuracy, x_report$balanced.accuracy[2], x_report$recall[2], x_report$specificity[2], x_report$F1[2], x_report$MCC[2], x_report$error.rate)
+report <- c(funcID, pathwaygenes[i,1], cutoff[4], x_report$accuracy, x_report$balanced.accuracy[2], x_report$recall[2], x_report$specificity[2], x_report$F1[2], x_report$MCC[2], x_report$error.rate)
 report <- as.matrix(report) ; report <- t(report)
 sen_spe_cut <- rbind(sen_spe_cut, report)
-print(i)
+cat(paste0(round(i / numfunc * 100), ' gene-sets completed'))
+if (i == numfunc) cat(': Done') else cat('\014')
+
 }
 
 if(MLmodel == 3) {
-set.seed(981998)
+	present0 <- grep('rf_result', system("ls", intern = T))
+    if (length(present0) == 0) {
+    system("mkdir rf_result")}
+    
+    set.seed(981998)
 lm_train3 <- randomForest(yout_training ~., ntree = 50 , data=data.frame(ascores_training)) ;
 predtrain3 = predict( lm_train3, data.frame(ascores_training)) ;
 
 result = predict( lm_train3 , data.frame(ascores_test)) ;
-finalpred = predict( lm_train3 , data.frame(peakscores)) ;
+finalpred = predict( lm_train3 , data.frame(peakscores)) ; #predicting the probablilities for all the promoters of the genes
 sidx = order(result, decreasing=TRUE) ;
 labels <- yout_test[sidx]; labels <- as.numeric(labels)
-TPR=cumsum(labels)/sum(labels); FPR= cumsum(!labels)/sum(!labels) ;
-aresults[ idx,1:length(result) ] = result[sidx] ;
-aTPR[ idx,1:length(TPR) ] = TPR ;
-aFPR[ idx,1:length(FPR) ] = FPR ;
-allpred[,idx ] = finalpred ;
+TPR=cumsum(labels)/sum(labels); FPR= cumsum(!labels)/sum(!labels) ; #True positive rate and false positive rate calculation
+aresults[ idx,1:length(result) ] = result[sidx] ; #appending the result of each function to the matrix
+aTPR[ idx,1:length(TPR) ] = TPR ; #appending the result of each function to the matrix
+aFPR[ idx,1:length(FPR) ] = FPR ; #appending the result of each function to the matrix
+allpred[,idx ] = finalpred ; #appending the result of each function to the matrix
 
-imp <- importance(lm_train3, scale = TRUE ) 
+imp <- importance(lm_train3, scale = TRUE )  #feature importance 
 impvar <- rownames(imp)[order(imp[, 1], decreasing=TRUE)]
 top20 <-impvar[1:20]
-alltfs[1:length(top20), idx] = top20 ; 
+alltfs[1:length(top20), idx] = top20 ;  #appending top predictors
 
 predicate <- prediction(result, yout_test)
 roc.perf = performance(predicate, measure = "tpr", x.measure = "fpr")
 perf <- performance(predicate,"tpr","fpr")
-opt.cut = function(perf, predicate){
+opt.cut = function(perf, predicate){ #function to calculate best cutoff for highest balanced accuracy
     cut.ind = mapply(FUN=function(x, y, p){
         d = (x - 0)^2 + (y-1)^2
         ind = which(d == min(d))
@@ -194,22 +201,29 @@ opt.cut = function(perf, predicate){
 cutoff <- c(idx,opt.cut(roc.perf, predicate ))
 predicted_result <- ifelse(result>cutoff[4], 1, 0)
 x_report <- ml_test(predicted_result, yout_test) ; funcID <- starti + idx -1  ;
-report <- c(funcID, cutoff[4], x_report$accuracy, x_report$balanced.accuracy[2], x_report$recall[2], x_report$specificity[2], x_report$F1[2], x_report$MCC[2], x_report$error.rate)
+report <- c(funcID, pathwaygenes[i,1], cutoff[4], x_report$accuracy, x_report$balanced.accuracy[2], x_report$recall[2], x_report$specificity[2], x_report$F1[2], x_report$MCC[2], x_report$error.rate)
 report <- as.matrix(report) ; report <- t(report)
-sen_spe_cut <- rbind(sen_spe_cut, report)
+sen_spe_cut <- rbind(sen_spe_cut, report) #gives complete report for the model
 
-print(i)
+cat(paste0(round(i / numfunc * 100), ' gene-sets completed'))
+if (i == numfunc) cat(': Done') else cat('\014')
+
+
 }
 
  if(MLmodel == 4) {
+	present0 <- grep('svm_result', ls(envir=.GlobalEnv))
+    if (length(present0) == 0 || length(present1) == 0) {
+    system("mkdir svm_result")}
+
  lm_train4 <- svm(yout_training ~ . , data= data.frame(ascores_training) )
 predtrain4 = predict( lm_train4 , data.frame(ascores_training)) ;
 
 result = predict( lm_train4 , data.frame(ascores_test)) ;
-finalpred = predict( lm_train4, data.frame(peakscores)) ;
+finalpred = predict( lm_train4, data.frame(peakscores)) ; #predicting the probablilities for all the promoters of the genes
 sidx = order(result, decreasing=TRUE) ;
 labels <- yout_test[sidx]
-TPR=cumsum(labels)/sum(labels); FPR= cumsum(!labels)/sum(!labels) ;
+TPR=cumsum(labels)/sum(labels); FPR= cumsum(!labels)/sum(!labels) ; #True positive rate and false positive rate calculation
 aTPR[ idx,1:length(TPR) ] = TPR ;
 aFPR[ idx,1:length(FPR) ] = FPR ;
 aresults[ idx,1:length(result) ] = result[sidx] ;
@@ -218,7 +232,7 @@ allpred[,idx ] = finalpred ;
 predicate <- prediction(result, yout_test)
 roc.perf = performance(predicate, measure = "tpr", x.measure = "fpr")
 perf <- performance(predicate,"tpr","fpr")
-opt.cut = function(perf, predicate){
+opt.cut = function(perf, predicate){ #function to calculate best cutoff for highest balanced accuracy
     cut.ind = mapply(FUN=function(x, y, p){
         d = (x - 0)^2 + (y-1)^2
         ind = which(d == min(d))
@@ -229,15 +243,20 @@ opt.cut = function(perf, predicate){
 cutoff <- c(idx,opt.cut(roc.perf, predicate ))
 predicted_result <- ifelse(result>cutoff[4], 1, 0)
 x_report <- ml_test(predicted_result, yout_test) ; funcID <- starti + idx -1 ; 
-report <- c(funcID, cutoff[4], x_report$accuracy, x_report$balanced.accuracy[2], x_report$recall[2], x_report$specificity[2], x_report$F1[2], x_report$MCC[2], x_report$error.rate)
+report <- c(funcID, pathwaygenes[i,1], cutoff[4], x_report$accuracy, x_report$balanced.accuracy[2], x_report$recall[2], x_report$specificity[2], x_report$F1[2], x_report$MCC[2], x_report$error.rate)
 report <- as.matrix(report) ; report <- t(report)
 sen_spe_cut <- rbind(sen_spe_cut, report)
-print(i)
+
+cat(paste0(round(i / numfunc * 100), ' gene-sets completed'))
+if (i == numfunc) cat(': Done') else cat('\014')
+
 
  }
 
 if (MLmodel ==5) {
-
+	present0 <- grep('xgb_result', ls(envir=.GlobalEnv))
+    if (length(present0) == 0 || length(present1) == 0) {
+    system("mkdir xgb_result")}
 
 samp_yout<- floor(0.75 * nrow(yout))
 train_yout<-sample(seq_len(nrow(yout)), size = samp_yout); train_yout <- as.matrix(train_yout)
@@ -302,6 +321,7 @@ for (row in 1:nrow(parameters_df)){
                     eval_metric = "error",
                     early_stopping_rounds= 30,
                     print_every_n = 100,
+                    verbose = 0,
                     watchlist = list(train= dtrain, val= dvalid)
   )
   lowest_error <- as.data.frame(1 - min(mdcv$evaluation_log$val_error))
@@ -329,6 +349,7 @@ lm_train5 <- xgb.train(params = params,
                        eval_metric = "auc",
                        eval_metric = "error",
                        early_stopping_rounds = 30,
+                       verbose = 0,
                        watchlist = list(train= dtrain, val= dvalid))
 
 
@@ -338,10 +359,10 @@ lm_train5 <- xgb.train(params = params,
 
 
 result <- predict(lm_train5, as.matrix(ascores_test));
-finalpred <- predict(lm_train5, as.matrix(peakscores));
+finalpred <- predict(lm_train5, as.matrix(peakscores)); #predicting the probablilities for all the promoters of the genes
 sidx <- order(result, decreasing=TRUE);
 labels <- yout_test[sidx]; labels <- as.numeric(labels)
-TPR = cumsum(labels)/sum(labels); FPR = cumsum(!labels)/sum(!labels);
+TPR = cumsum(labels)/sum(labels); FPR = cumsum(!labels)/sum(!labels); #True positive rate and false positive rate calculation
 aTPR[ idx, 1:length(TPR) ] = TPR ; 
 aFPR[idx, 1:length(FPR)] = FPR ;
 aresults [idx, 1:length(result)] = result[sidx] ;
@@ -355,7 +376,7 @@ alltfs[1:length(top20), idx] = top20 ;
 predicate <- prediction(result, yout_test)
 roc.perf = performance(predicate, measure = "tpr", x.measure = "fpr")
 perf <- performance(predicate,"tpr","fpr")
-opt.cut = function(perf, predicate){
+opt.cut = function(perf, predicate){ #function to calculate best cutoff for highest balanced accuracy
     cut.ind = mapply(FUN=function(x, y, p){
         d = (x - 0)^2 + (y-1)^2
         ind = which(d == min(d))
@@ -366,7 +387,7 @@ opt.cut = function(perf, predicate){
 cutoff <- c(idx,opt.cut(roc.perf, predicate ))
 predicted_result <- ifelse(result>cutoff[4], 1, 0)
 x_report <- ml_test(predicted_result, yout_test) ; funcID <- starti + idx -1 ;
-report <- c(funcID, cutoff[4], x_report$accuracy, x_report$balanced.accuracy[2], x_report$recall[2], x_report$specificity[2], x_report$F1[2], x_report$MCC[2], x_report$error.rate)
+report <- c(funcID, pathwaygenes[i,1], cutoff[4], x_report$accuracy, x_report$balanced.accuracy[2], x_report$recall[2], x_report$specificity[2], x_report$F1[2], x_report$MCC[2], x_report$error.rate)
 report <- as.matrix(report) ; report <- t(report)
 sen_spe_cut <- rbind(sen_spe_cut, report)
 
@@ -379,17 +400,12 @@ top10_shap <- cbind(i,top10_shap)
 shap_matrix <- rbind(shap_matrix, top10_shap)
 
 
-shap_img_pwd = "/home/omkarc/omkar/non_coding/onto1/5/shap_images/"
-shap_img <- paste(shap_img_pwd, i,"-shap.png", sep = "")
 
-jpeg(shap_img, units="in", width=7, height=7, res=400)
-shap.plot.summary.wrap1(lm_train5, X = ascores_training, top_n = 10)
-ggsave(file = shap_img)
-dev.off()
+cat(paste0(round(i / numfunc * 100), ' gene-sets completed'))
+if (i == numfunc) cat(': Done') else cat('\014')
 
-
-print(i)
 }
+
 
 allcor[i] = cor(result, yout_test) ;
 },
@@ -398,17 +414,12 @@ allcor[i] = cor(result, yout_test) ;
 }
 sen_spe_cut <- sen_spe_cut[-1,]
 shap_matrix <- shap_matrix[-1,]
+
 write.table( aTPR, file=TPRf) ;
 write.table(  aFPR , file=FDRf) ;
-write.table( aresults , file=scoresf) ;
 write.table(allcor, file= outf ) ;
 write.table(allpred, file=predf ) ;
 if (MLmodel == 5 | MLmodel == 3) {
 write.table(alltfs, file=toptf);
 }
 write.table(sen_spe_cut, file=cfmtx);
-if (MLmodel ==5) {
-write.table(shap_matrix, file =shap_features)
-
-}
-
