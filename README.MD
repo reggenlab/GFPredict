@@ -143,12 +143,19 @@ run pubmed-based abstract mining and plot the number of occurrences of predicted
 
 Clone the document using command from [3A.](#clone) and run the below commands.
 
+***Step 1.*** Run abtract mining using Bio-Entrez library in python
 ```shell
 #move to the directory containing script: pubmed_abtract_mining.py 
 cd GFPredict/code/
 
 #Run the script, can take up to 30-120 minutes depending on the NCBI's server 
 python3 pubmed_abtract_mining.py
+
+```
+***Step 2.*** Run the R script to plot the obtained data. Data is present at GFPredict/data/ 
+Or use data generated in the above step by editing the path in the script
+```shell
+Rscript plot_abtract_mining_results.R
 
 ```
 
