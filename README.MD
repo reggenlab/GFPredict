@@ -189,7 +189,7 @@ Rscript lncrna_crispr_validation.R
 
 Clone the document using command from [3A.](#clone) and run the below command.
 
-'''shell
+``` shell
 #The outputs will be PDFs containg barplots
 Rscript package_test_crispr.R 
 
