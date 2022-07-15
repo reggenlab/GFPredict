@@ -93,7 +93,7 @@ Run the following scrips to reproduce the results showed in the [paper](https://
 
 ### A. Generateing results of random forest algorithm for 295 ontological gene-sets in **3 steps:** <a name="ontology_results"></a>
 
-**Step 1.** Clone the GitHub repository. 
+**Step 1.** Clone the GitHub repository. <a name="clone"></a> 
 
 ```shell
 #script
@@ -141,6 +141,7 @@ run pubmed-based abstract mining and plot the number of occurrences of predicted
 
 **Note:** Path inside the script for the input file is set to '../data/predicted_genes.csv', you can give your own result file obtained after section 3A. 
 
+Clone the [document]#clone
 ```shell
 #move to the directory containing script: pubmed_abtract_mining.py 
 cd GFPredict/code/
