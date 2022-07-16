@@ -202,6 +202,9 @@ Rscript lncrna_crispr_validation.R
 Clone the document using command from [3A.](#clone) and run the below command.
 
 ``` shell
+#move to directory containing script: lncrna_crispr_validation.R
+cd GFPredict/code/
+
 #The outputs will be PDFs containg barplots
 Rscript package_test_crispr.R 
 
