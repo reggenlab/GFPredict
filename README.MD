@@ -171,7 +171,7 @@ Rscript plot_abtract_mining_results.R
 **Note:** R package 'Rtsne' and  'factoextra' must be installed to run this code.
 
 Clone the document using command from [3A.](#clone).
-Run the below code to get plot of cluster of functions based on shared top predictors.
+Run the below code to get plot of clusters of functions based on shared top predictors.
 
 ```shell
 #move to the directory containing script: clustering_functions.R
