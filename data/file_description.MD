@@ -1,4 +1,4 @@
-##Files are orderd with respect to their usage in the different scripts.
+Files are orderd with respect to their usage in the different scripts.
 
 **pred_scores*.csv (10 files)** <- Input of calculate_tpr_predict_genes, contains probablity scores for all the genes (rows). 
 **predicted_genes.csv** <- Output of calculate_tpr_predict_genes, contains contains predicted genes (columns) for each functions(rows). 
