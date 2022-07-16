@@ -112,6 +112,7 @@ git clone https://github.com/reggenlab/GFPredict.git
 
 **Note: It will take up to 30 minutes to completely run the code, check the progress opening functionalML.Rout file**
 
+
 ```shell
 #move to the directory condtaining R script
 cd GFPredict/code/
@@ -120,7 +121,9 @@ cd GFPredict/code/
 nohup R CMD BATCH '--args  starti=1 endi=295  MLmodel=3  outf="rf_result/f-1-295.txt" TPRf="rf_result/TPR-1-295.txt" FDRf="rf_result/FDR-1-295.txt" predf="rf_result/pred-1-295.txt" toptf="rf_result/tfs-1-295.txt"  cfmtx="rf_result/cf-1-295.txt" '  functionalML.R  &
 
 ```
-**Step 3.** After getting output files in /3 directory, run the below command, predicted genes will be in the file.
+**Step 3.** Note that the input files (pred_scores*.csv) are hard-coding into the script.
+Change the input file you got from the above step by editing the script, "/rf_result/pred-1-295.txt" directory.
+
 
 ```shell
 
