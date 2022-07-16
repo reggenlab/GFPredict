@@ -194,8 +194,10 @@ cd GFPredict/code/
 Rscript lncrna_crispr_validation.R
 
 ```
+---
 
-### D. GFPredict testing using different CRISPR screens <a name="different_crispr_screen"></a>
+
+### E. GFPredict testing using different CRISPR screens <a name="different_crispr_screen"></a>
 
 Clone the document using command from [3A.](#clone) and run the below command.
 
