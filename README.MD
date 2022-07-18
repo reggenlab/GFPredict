@@ -215,5 +215,6 @@ Rscript package_test_crispr.R
 
 ### F. Metadata of features used and its availablility <a name="features_meta"></a>
 
-* The metadata information of the features used is available at GFPredict/data/
+* The metadata information of the features used is available at GFPredict/data/meta_data_features.csv
+* The feature data is available at GFPredict/inst/extdata/peakall*.rds
 <!-- markdownlint-enable -->
