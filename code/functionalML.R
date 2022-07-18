@@ -53,7 +53,7 @@ idx = i - starti + 1 ;
   posdim = dim(posScores) ;
 #  set.seed(2014)
   negRows = sample(1:updim[1], length(pos), 1) ; #selecting 
-  negScores = peakscores[negRows,] ; ) ; #selecting the peakscore values (features) for the negative genes 
+  negScores = peakscores[negRows,] ; #selecting the peakscore values (features) for the negative genes 
   ascores = rbind(posScores , negScores) ;
   ascores = as.matrix(ascores)
   yout = matrix(0, (posdim[1] * 2), 1) ;
