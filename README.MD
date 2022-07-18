@@ -100,7 +100,7 @@ Run the following scrips to reproduce the results showed in the [paper](https://
 git clone https://github.com/reggenlab/GFPredict.git
 
 ```
-**Step 2.** Run the below two commands and the output results will be saved inside directory '/3'. ***Make sure following R packages are installed:***
+**Step 2.** Run the below two commands and the output results will be saved inside directory '/rf_result'. ***Make sure following R packages are installed:***
 
 *  "ggplot2"
 *  "randomForest" 
