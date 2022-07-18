@@ -247,7 +247,7 @@ dev.off()
 
 message("Check  'compare_model_null_resis_bacteria.pdf' to check the model's performance on CRISPR screen for resistance to bacteria")
 
-################################################ ectoderm ########################################################################
+################################################ viability ########################################################################
 message("Loading data related to the resistance to bacteria CRISPR")
 #Check PMID 31316073 to get the article related to this screen")
 viability_screen <- read.csv('../data/viability_screen.csv') # resistance to bacteria
