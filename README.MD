@@ -15,6 +15,7 @@
    - [C. Clustering of functions](#function_cluster)
    - [D. Validation of predicted lncRNAs in clusters using CRISPR screens](#cluster_crispr_screen)
    - [E. GFPredict testing using different CRISPR screens](#different_crispr_screen)
+   - [F. Metadata of features used and its availablility](#features_meta)
 
 
 ---
@@ -209,4 +210,10 @@ cd GFPredict/code/
 Rscript package_test_crispr.R 
 
 ```
+---
+
+
+### F. Metadata of features used and its availablility <a name="features_meta"></a>
+
+* The metadata information of the features used is available at GFPredict/data/
 <!-- markdownlint-enable -->
