@@ -2,7 +2,7 @@
 % Please edit documentation in R/predict_related_genes.R
 \name{predict_related_genes}
 \alias{predict_related_genes}
-\title{The function \code{predict_related_genes()} predicts functions similar enes
+\title{The function \code{predict_related_genes()} predicts functions similar genes
 and epigenomic marks present across promoter sites of the genes}
 \usage{
 predict_related_genes(genes, ml_model, n_bootstrap, feature_type)
@@ -21,7 +21,7 @@ predict_related_genes(genes, ml_model, n_bootstrap, feature_type)
 List containing predicted gene, top predictors (if ml_model = 'random forest') and ML model performance metrics
 }
 \description{
-The function \code{predict_related_genes()} predicts functions similar enes
+The function \code{predict_related_genes()} predicts functions similar genes
 and epigenomic marks present across promoter sites of the genes
 }
 \examples{
