@@ -5,7 +5,7 @@
 ---
 
 ## Table of contents[![](./extras/images/pin.svg)](#table-of-contents)
-1. [GFPredict Package installation](#installation)
+1. [GFPredict Package installation (requires "devtools")](#installation)
 
 2. [GFPredict usage examples](#examples)
 
