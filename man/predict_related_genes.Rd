@@ -25,20 +25,23 @@ The function \code{predict_related_genes()} predicts functions similar enes
 and epigenomic marks present across promoter sites of the genes
 }
 \examples{
-`cell_cycle_related_genes <- c("RPL23A", "IPO4", "TARS1", "COG4", "TEX10", "TRMT112", "TXNL4A", "CLP1", 
+cell_cycle_related_genes <- c("RPL23A", "IPO4", "TARS1", "COG4", "TEX10", "TRMT112", "TXNL4A", "CLP1", 
 "HSPA5", "ANAPC4", "RNF168", "ATP5F1D", "RUVBL2", "NMT1", "PNKP", "SF3B3", "FDPS", "FARSB", "HARS1",
-"RPL8", "CCT3", "AQR", "MCL1", "CENPM")` #Reference: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5642621/
+"RPL8", "CCT3", "AQR", "MCL1", "CENPM") #Reference: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5642621/
 
-`result <- predict_related_genes(genes = cell_cycle_related_genes)`
+result <- predict_related_genes(genes = cell_cycle_related_genes)
 
-`result <- predict_related_genes(genes = cell_cycle_related_genes, n_bootstrap = 5)`
+result <- predict_related_genes(genes = cell_cycle_related_genes, n_bootstrap = 5)
 
-`result <- predict_related_genes(genes = cell_cycle_related_genes, ml_model = 'svm', n_bootstrap = 10, feature_type = 'transcription_factors')`
+result <- predict_related_genes(genes = cell_cycle_related_genes, ml_model = 'svm', n_bootstrap = 10, feature_type = 'transcription_factors')
 
-`result[[1]] # contains list of predicted genes`
+result[[1]] # contains list of predicted genes
 
-`result[[2]] # contains table of model performance metrics`
+result[[2]] # contains table of model performance metrics
 
-`result[[3]] # contains table of top predictors (if ml_model = random.forest)`
+result[[3]] # contains table of top predictors (if ml_model = random.forest)
 
+}
+\references{
+Omkar Chandra, Madhu Sharma, Neetesh Pandey, Indra Prakash Jha, Shreya Mishra, Say Li Kong, Vibhor Kumar (2022). Inferring functions of coding and non-coding genes using epigenomic patterns and deciphering the effect of combinatorics of transcription factors binding at promoters. 10.1101/2022.04.17.488570.
 }
