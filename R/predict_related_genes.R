@@ -1,35 +1,29 @@
 options(warn=-1);
 options(scipen = 999);
 
-# list.of.packages <- c("ggplot2", "Rcpp", "randomForest", "mltest", 'ROCR', "glmnet", "e1071", "xgboost")
-# new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-# if(length(new.packages)) install.packages(new.packages)
-
-
-#' The function makes gene prediction based on similarity in shared transcription factors 
+#' The function `predict_related_genes()` predicts functions similar enes  
 #' and epigenomic marks present across promoter sites of the genes
-#' @param genes Object of class list, containing functionally related genes
+#' @param genes Object of class list, containing functionally related genes. NOTE: Only HGNC gene symbols are allowed
 #' @param ml_model Object of class string, Machine learning model to select. Options:
 #' 'xg.boost' , 'svm', 'random.forest' (default), 'linear.regression', 'logistic.regression'
 #' @param n_bootstrap Number of bootstraps of the negative samples (n = 3 by default)
 #' @param feature_type Object of class string. Type of features to train the model. Options: 'all_features' (default), 'transcription_factors'
 #' @examples
-#' cell_cycle_related_genes <- c("RPL23A", "IPO4", "TARS1", "COG4", "TEX10", "TRMT112", "TXNL4A", "CLP1", 
-#' "HSPA5", "ANAPC4", "RNF168", "ATP5F1D", "RUVBL2", "NMT1", "PNKP", "SF3B3", "FDPS", "FARSB", "HARS1",
-#' "RPL8", "CCT3", "AQR", "MCL1", "CENPM") 
-#'  Reference: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5642621/
+#' `cell_cycle_related_genes <- c("RPL23A", "IPO4", "TARS1", "COG4", "TEX10", "TRMT112", "TXNL4A", "CLP1", 
+#'"HSPA5", "ANAPC4", "RNF168", "ATP5F1D", "RUVBL2", "NMT1", "PNKP", "SF3B3", "FDPS", "FARSB", "HARS1",
+#'"RPL8", "CCT3", "AQR", "MCL1", "CENPM")` #Reference: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5642621/
 #' 
-#' result <- predict_related_genes(genes = cell_cycle_related_genes)
+#' `result <- predict_related_genes(genes = cell_cycle_related_genes)`
 #' 
-#' result <- predict_related_genes(genes = cell_cycle_related_genes, n_bootstrap = 5)
+#' `result <- predict_related_genes(genes = cell_cycle_related_genes, n_bootstrap = 5)`
 #' 
-#' result <- predict_related_genes(genes = cell_cycle_related_genes, ml_model = 'svm', n_bootstrap = 10, feature_type = 'transcription_factors')
+#' `result <- predict_related_genes(genes = cell_cycle_related_genes, ml_model = 'svm', n_bootstrap = 10, feature_type = 'transcription_factors')`
 #' 
-#' result[[1]] # contains list of predicted genes 
+#' `result[[1]] # contains list of predicted genes`
 #' 
-#' result[[2]] # contains table of model performance metrics 
+#' `result[[2]] # contains table of model performance metrics`
 #' 
-#' result[[3]] # contains table of top predictors (if ml_model = random.forest)
+#' `result[[3]] # contains table of top predictors (if ml_model = random.forest)`
 #' 
 #' @return List containing predicted gene, top predictors (if ml_model = 'random forest') and ML model performance metrics
 #' @export
@@ -308,6 +302,7 @@ lowest_error_list = list()
 parameters_list = list()
 
 
+#set.seed(20)
 for (iter_xg in 1:10){
   param <- list(booster = "gbtree",
                 objective = "binary:logistic",
@@ -350,6 +345,7 @@ lowest_error_df = do.call(rbind, lowest_error_list)
 
 # Bind columns of accuracy values and random hyperparameter values
 randomsearch = cbind(lowest_error_df, parameters_df)
+#set.seed(20)
 params <- list(booster = "gbtree", 
                objective = "binary:logistic",
                max_depth = randomsearch[1,]$max_depth,
@@ -388,11 +384,16 @@ sen_spe_mat_i[iter,] <-  sen_spe_i
 ####################################################################################################################
 ########################################################## count and give the number of iternations ######################################################################################
 
+extra <- nchar('||100%')
+width <- options()$width
+step <- round(iter / n_bootstrap * (width - extra))
+text <- sprintf('|%s%s|% 3s%%', strrep('=', step), strrep(' ', width - step - extra), round(iter / n_bootstrap * 100))
+cat('model training:', text)
+Sys.sleep(0.05)
+cat(if (iter == n_bootstrap) '\n' else '\014')
 
-cat(paste0(round(iter / n_bootstrap * 100), '% training completed'))
-if (iter == n_bootstrap) cat(': Done') else cat('\014')
+
 }
-
 
 aTPR_pre <- aTPR[, colSums(is.na(aTPR)) != nrow(aTPR)] ## remove NAs
 aTPR_final <- colSums(aTPR_pre) / ncol(aTPR_pre) ## taking average
@@ -458,7 +459,7 @@ print(sen_spe_mat_final)
 if (ml_model == 'linear.regression' || ml_model == 'logistic.regression')  {
 if(length(final_predicted_genes) > 200) {
     message("Try a different ML model for better result\nrecommended: ml_model = 'xg.boost' or 'svm' ")}
-if(length(final_predicted_genes) < 10) {
+if(length(final_predicted_genes) == 0 || length(final_predicted_genes) < 10) {
     message("The number of predicted genes is less");
     message("To fine-tune the predictions:\n Increase the number of input genes\n Or decrease/increase 'n_bootstrap' ");
     message("Try a different ML model\nRecommended: 'random.forest' or 'svm' ") }
@@ -470,7 +471,7 @@ if (ml_model == 'svm') {
     if(length(final_predicted_genes) > 200) {
         message("Number of predicted genes is too high\nfine-tune the model by increasing/decreasing the n_bootsrap");
         message("Or try a different ML model for better result:\n ml_model = 'xg.boost' or 'random.forest' ")}
-    if(length(final_predicted_genes) < 10) {
+    if(length(final_predicted_genes) == 0 || length(final_predicted_genes) < 10) {
         message("The number of predicted genes is less");
         message("To fine-tune the predictions:\n Increase the number of input genes\n Or decrease/increase 'n_bootstrap' ");
         message("Try a different ML model: ml_model = 'random.forest' or 'xg.boost' ") }
@@ -481,7 +482,7 @@ if (ml_model == 'xg.boost') {
     if(length(final_predicted_genes) > 200) {
         message("Number of predicted genes is too high\nfine-tune the model by increasing/decreasing the n_bootsrap");
         message("Or try a different ML model for better results:\n ml_model =  'svm' or 'random.forest'")}
-    if(length(final_predicted_genes) < 10) {
+    if(length(final_predicted_genes) == 0 || length(final_predicted_genes) < 10) {
         message("The number of predicted genes is less");
         message("To fine-tune the predictions:\n Increase the number of input genes\n Or decrease/increase 'n_bootstrap' ");
         message("Try a different ML model: ml_model = 'random.forest' or 'svm' ") }
@@ -496,11 +497,11 @@ if (ml_model == 'random.forest') {
     if(length(final_predicted_genes) > 200) {
         message("Number of predicted genes is too high\nfine-tune the model by increasing/decreasing the n_bootsrap");
         message("Or try a different ML model for better results:\n ml_model =  'svm' or 'xg.boost'")}
-    if(length(final_predicted_genes) < 10) {
+    if(length(final_predicted_genes) == 0 || length(final_predicted_genes) < 10) {
         message("The number of predicted genes is less");
         message("To fine-tune the predictions:\n Increase the number of input genes\n Or decrease/increase 'n_bootstrap' ");
         message("Try a different ML model: ml_model = 'svm' or 'xg.boost' ") }
-    if(length(final_predicted_genes) < 150 & length(final_predicted_genes) >! 1) {
+    if(length(final_predicted_genes) < 150 || length(final_predicted_genes) >! 1) {
         message('Predicted genes:');  print(final_predicted_genes) }
 
     return(result_list_rf) }
@@ -508,3 +509,23 @@ if (ml_model == 'random.forest') {
 
 
 }
+
+#devtools::document()
+# 'xg.boost' , 'svm', 'random.forest', 'linear.regression', 'logistic.regression'
+# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'linear.regression')
+# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'logistic.regression')
+# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'random.forest')
+# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'svm')
+# result = predict_related_genes(genes= breast_cancer_genes, ml_model = 'xg.boost')
+
+# packageurl <- "http://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_0.90.0.2.tar.gz"
+# install.packages(packageurl, repos=NULL, type="source")
+#install_version("glmnet", version = "3.0-2") #https://cran.r-project.org/src/contrib/Archive/glmnet/
+
+#############################################################################################################################
+#############################################################################################################################
+#############################################################################################################################
+
+
+
+
