@@ -20,7 +20,7 @@
 
 ---
 
-## 1. GFPredict Package installation[![](./extras/images/pin.svg)]<a name="installation"></a>
+## 1. GFPredict Package installation (requires "devtools")[![](./extras/images/pin.svg)]<a name="installation"></a>
 
 ### Download zip file and install the package (recommended):
 
