@@ -1,6 +1,8 @@
 ## Introduction[![](./extras/images/pin.svg)](#introduction)
 
-**GFPredict** is a R package. It predicts coding and non-coding genes related to (user input) gene-sets. GFPredict compares the similarity between the epigenomic and transcription factor binding patterns at the promoter sites of the input genes and other genes, to make predictions. [Click here](https://www.biorxiv.org/content/10.1101/2022.04.17.488570v1) to learn more about GFPredict.
+**GFPredict** is a R package. It predicts coding and non-coding genes related to (user input) gene-sets. GFPredict compares the similarity between the epigenomic and transcription factor binding patterns at the promoter sites of the input genes and other genes, to make predictions. 
+
+Reference: [Click here](https://www.biorxiv.org/content/10.1101/2022.04.17.488570v1) to learn more about GFPredict.
 
 ---
 
