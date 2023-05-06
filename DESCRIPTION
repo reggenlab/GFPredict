@@ -1,7 +1,7 @@
 Package: GFPredict
 Function: predict_related_genes.R
 Title: Predicts functionally related genes based on shared epigenomic and transcription factor binding patterns
-Version: 1.0
+Version: 0.99.0
 Authors@R: 
     c(person("Omkar", "Chandra", email = "omkarc@iiitd.ac.in", role = c("aut", "cre")),
     person("Vibhor", "Kumar", email = "vibhor@iiitd.ac.in", role = c("aut")))
