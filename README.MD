@@ -61,6 +61,8 @@ install.packages(packageurl_rf, repos=NULL, type="source")
 
 ## 2. GFPredict usage examples [![](./extras/images/pin.svg)]<a name="examples"></a>
 
+### NOTE: Only HGNC gene symbols are allowed
+
 After the installation:
 
 ``` r
@@ -101,7 +103,7 @@ Run the following scrips to reproduce the results showed in the [paper](https://
 git clone https://github.com/reggenlab/GFPredict.git
 
 ```
-**Step 2.** Run the below two commands and the output results will be saved inside directory '/rf_result'. ***Make sure following R packages are installed:***
+**Step 2.** Run the below two commands and the output results will be saved inside directory '/rf_result'. ***Make sure following R packages are installed (dependencies):***
 
 *  "ggplot2"
 *  "randomForest" 
