@@ -1,17 +1,19 @@
 Package: GFPredict
 Function: predict_related_genes.R
+Date: 2023-05-07
 Title: Predicts functionally related genes based on shared epigenomic and transcription factor binding patterns
 Version: 0.99.0
 Authors@R: 
-    c(person("Omkar", "Chandra", email = "omkarc@iiitd.ac.in", role = c("aut", "cre")),
+    c(person("Omkar", "Chandra", email = c("omkarc@iiitd.ac.in", "omkarchandra.r@gmail.com"), role = c("aut", "cre")),
     person("Vibhor", "Kumar", email = "vibhor@iiitd.ac.in", role = c("aut")))
 URL: https://github.com/reggenlab/GFPredict
 Description: This package contains function: 'predicted_related_genes' that predicts coding and non-coding genes related to (user input) gene-sets. GFPredict compares the similarity between the epigenomic and transcription factor binding patterns at the promoter sites of the input genes and other genes, to make predictions.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a license
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.0)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
+VignetteBuilder: knitr
 Imports: 
     data.table,
     e1071,
@@ -21,3 +23,13 @@ Imports:
     randomForest,
     ROCR,
     xgboost
+biocViews:
+    Software,
+    ResearchField,
+    FunctionalGenomics,
+    GenePrediction,
+    FunctionalPrediction,
+BugReports: https://github.com/reggenlab/GFPredict/issues
+Suggests: 
+    knitr,
+    rmarkdown
