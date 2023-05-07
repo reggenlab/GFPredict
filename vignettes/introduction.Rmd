@@ -1,0 +1,84 @@
+---
+title: "Introduction to GFPredict package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+**This package contains function: 'predicted_related_genes' that predicts coding and non-coding genes related to (user input) gene-sets. GFPredict compares the similarity between the epigenomic and transcription factor binding patterns at the promoter sites of the input genes and other genes, to make predictions. [Click here](https://www.biorxiv.org/content/10.1101/2022.04.17.488570v1.full) to read more about the package.**
+
+## Load GFPredict package:
+```{r setup}
+library(GFPredict)
+```
+
+## Create functionally related gene sets with a minimum of 20 genes: 
+
+```{r, eval = TRUE, warning = FALSE}
+cell_cycle_related_genes <- c("RPL23A", "IPO4", "TARS1", "COG4", "TEX10", "TRMT112", "TXNL4A", "CLP1",
+"HSPA5", "ANAPC4", "RNF168", "ATP5F1D", "RUVBL2", "NMT1", "PNKP", "SF3B3", "FDPS", "FARSB", "HARS1",
+"RPL8", "CCT3", "AQR", "MCL1", "CENPM")
+
+print(paste0("Number of genes: ", length(cell_cycle_related_genes)))
+``` 
+
+## Use GFPredict `predict_related_genes` function to predict genes related to cell cycle:
+
+```{r, eval = TRUE, warning = FALSE, echo = TRUE, results = 'hide'}
+result <- predict_related_genes(cell_cycle_related_genes, n_bootstrap = 10) #Default parameter are selected
+``` 
+### To get predicted list of genes:
+
+```{r, eval = TRUE}
+predicted_genes = result[[1]]# contains list of predicted genes 
+print(predicted_genes)
+``` 
+### To get performace of the models:
+
+```{r, eval = TRUE}
+model_metrics = result[[2]] # contains table of model performance metrics 
+print(model_metrics)
+``` 
+### To get top predictors:
+
+```{r, eval = TRUE}
+top_predictors = result[[3]] # contains table of top predictors (if ml_model = random.forest)
+print(top_predictors)
+``` 
+
+## Other use cases with following parameters:
+* ml_model
+    + 'xg.boost'
+    + 'svm'
+    + 'random.forest' (default)
+    + 'linear.regression'
+    + 'logistic.regression'
+
+* n_bootstrap
+    + 3 (default), can be changed up to 20 until model metrics improves 
+
+* feature_type
+    + 'all_features' (default)
+    + 'transcription_factors'
+
+``` {r, eval = FALSE}
+result <- predict_related_genes(cell_cycle_related_genes, n_bootstrap = 15, ml_model = 'xg.boost', feature_type = 'transcription_factors') 
+
+result[[1]] # contains list of predicted genes 
+
+result[[2]] # contains table of model performance metrics 
+
+result[[3]] # contains table of top predictors (if ml_model = random.forest)
+```
+
+## Reference
+[External link](https://www.biorxiv.org/content/10.1101/2022.04.17.488570v1.full)
